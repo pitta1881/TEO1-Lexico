@@ -13,7 +13,7 @@ FlexLexico is a Java-based lexical analyzer project. It reads and processes a fi
 
 ## Prerequisites
 
-- Java 20
+- Java 21
 - Maven
 - java-cup-11b (version 2015.03.26)
 
@@ -52,14 +52,6 @@ java -jar .\FlexLexico-2.0.jar
 ## Usage
 
 The UI will allow you to load the input file or write in the text area and display the results. The tokens will be saved in ts.txt.
-
-## Authors (Grupo 3)
-
-- Cosentino Matias
-- Juarez Sebastian
-- **Nardoni Valentin** (Delegado)
-- Pittavino Patricio
-- Rueda Lucas
 
 ## Anexo
 
