@@ -13,8 +13,14 @@ parser code
 {:
     /** Método llamado automáticamente ante errores sintácticos */
     public void syntax_error(Symbol s) {
-        System.out.println("Error en la línea " + (s.right + 1) + ", columna " + s.left + ". Símbolo no reconocido: " + s.value);
+        int linea = s.left;
+        int columna = s.right;
+        if (linea != -1 && columna != -1) {
+            System.out.println("Error en la línea " + linea + ", columna " + columna + ". Símbolo no reconocido: " + s.value);
+            throw new RuntimeException("Error en la línea " + linea + ", columna " + columna + ". Símbolo no reconocido: " + s.value);
+        }
     }
+
 :}
 
 // Código adicional para manejar reglas

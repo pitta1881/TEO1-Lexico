@@ -123,22 +123,27 @@ public class VistaGrafica {
 
 		btnAnalizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					tokenList.clear();
-					rulesList.clear();
-					TokenRulesObject tokenRules = FlexLexico.analizar(inputTextArea.getText());
-					tokenList.addAll(tokenRules.tokenList());
-					rulesList.addAll(tokenRules.rulesList());
-					printTokens(tokenList);
-					printRules(rulesList);
-					saveTsFile(tokenList);
-				} catch (Exception e1) {
-					e1.printStackTrace();
+				if(!inputTextArea.getText().isEmpty()) {
+					try {
+						tokenList.clear();
+						rulesList.clear();
+						TokenRulesObject tokenRules = FlexLexico.analizar(inputTextArea.getText());
+						tokenList.addAll(tokenRules.tokenList());
+						rulesList.addAll(tokenRules.rulesList());
+						printTokens(tokenList);
+						printRules(rulesList);
+						saveTsFile(tokenList);
+					} catch (Exception e1) {
+						showErrorDialog(e1.getMessage());
+					}
 				}
 			}
 		});
 	}
 
+	private void showErrorDialog(String message) {
+		JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+	}
 
 
 	/**

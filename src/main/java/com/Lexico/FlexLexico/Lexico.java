@@ -788,7 +788,7 @@ public class Lexico implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return new Symbol(1000, yytext());
+            { return new Symbol(1000, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 48: break;
@@ -798,37 +798,37 @@ public class Lexico implements java_cup.runtime.Scanner {
           // fall through
           case 49: break;
           case 3:
-            { return new Symbol(sym.Parentesis_abierto, yytext());
+            { return new Symbol(sym.Parentesis_abierto, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 50: break;
           case 4:
-            { return new Symbol(sym.Parentesis_cerrado, yytext());
+            { return new Symbol(sym.Parentesis_cerrado, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 51: break;
           case 5:
-            { return new Symbol(sym.Multiplicacion, yytext());
+            { return new Symbol(sym.Multiplicacion, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 52: break;
           case 6:
-            { return new Symbol(sym.Suma, yytext());
+            { return new Symbol(sym.Suma, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 53: break;
           case 7:
-            { return new Symbol(sym.Coma, yytext());
+            { return new Symbol(sym.Coma, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 54: break;
           case 8:
-            { return new Symbol(sym.Resta, yytext());
+            { return new Symbol(sym.Resta, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 55: break;
           case 9:
-            { return new Symbol(sym.Division, yytext());
+            { return new Symbol(sym.Division, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 56: break;
@@ -837,81 +837,81 @@ public class Lexico implements java_cup.runtime.Scanner {
         try {
             int num = Integer.parseInt(yytext());
             if (num >= -32768 && num <= 32767) {
-                return new Symbol(sym.Cte_i, yytext());
+                return new Symbol(sym.Cte_i, yyline + 1, yycolumn + 1, yytext());
             } else {
-                return new Symbol(1005, yytext());
+                return new Symbol(1005, yyline + 1, yycolumn + 1, yytext());
             }
         } catch (NumberFormatException e) {
-            return new Symbol(1005, yytext());
+            return new Symbol(1005, yyline + 1, yycolumn + 1, yytext());
         }
             }
           // fall through
           case 57: break;
           case 11:
-            { return new Symbol(sym.Dos_puntos, yytext());
+            { return new Symbol(sym.Dos_puntos, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 58: break;
           case 12:
-            { return new Symbol(sym.Punto_y_coma, yytext());
+            { return new Symbol(sym.Punto_y_coma, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 59: break;
           case 13:
-            { return new Symbol(sym.Menor_que, yytext());
+            { return new Symbol(sym.Menor_que, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 60: break;
           case 14:
-            { return new Symbol(sym.Asignacion, yytext());
+            { return new Symbol(sym.Asignacion, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 61: break;
           case 15:
-            { return new Symbol(sym.Mayor_que, yytext());
+            { return new Symbol(sym.Mayor_que, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 62: break;
           case 16:
-            { return new Symbol(sym.Corchete_abierto, yytext());
+            { return new Symbol(sym.Corchete_abierto, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 63: break;
           case 17:
-            { return new Symbol(sym.Corchete_cerrado, yytext());
+            { return new Symbol(sym.Corchete_cerrado, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 64: break;
           case 18:
-            { return new Symbol(1002, yytext());
+            { return new Symbol(1002, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 65: break;
           case 19:
-            { return new Symbol(sym.Id, yytext());
+            { return new Symbol(sym.Id, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 66: break;
           case 20:
-            { return new Symbol(sym.Llave_abierta, yytext());
+            { return new Symbol(sym.Llave_abierta, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 67: break;
           case 21:
-            { return new Symbol(sym.Llave_cerrada, yytext());
+            { return new Symbol(sym.Llave_cerrada, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 68: break;
           case 22:
-            { return new Symbol(sym.Diferente, yytext());
+            { return new Symbol(sym.Diferente, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 69: break;
           case 23:
             { if (yytext().length() - 2 <= 30) { // Verifica el límite de 30 caracteres
-            return new Symbol(sym.Cte_s, yytext());
+            return new Symbol(sym.Cte_s, yyline + 1, yycolumn + 1, yytext());
         } else {
-            return new Symbol(1003, yytext());
+            return new Symbol(1003, yyline + 1, yycolumn + 1, yytext());
         }
             }
           // fall through
@@ -920,125 +920,125 @@ public class Lexico implements java_cup.runtime.Scanner {
             { // if cast to Float fail, return error
         try {
             Float.parseFloat(yytext());
-            return new Symbol(sym.Cte_f, yytext());
+            return new Symbol(sym.Cte_f, yyline + 1, yycolumn + 1, yytext());
         } catch (NumberFormatException e) {
-            return new Symbol(1004, yytext());
+            return new Symbol(1004, yyline + 1, yycolumn + 1, yytext());
         }
             }
           // fall through
           case 71: break;
           case 25:
-            { return new Symbol(sym.Asign_mult, yytext());
+            { return new Symbol(sym.Asign_mult, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 72: break;
           case 26:
-            { return new Symbol(sym.Menor_o_igual_que, yytext());
+            { return new Symbol(sym.Menor_o_igual_que, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 73: break;
           case 27:
-            { return new Symbol(sym.Igual, yytext());
+            { return new Symbol(sym.Igual, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 74: break;
           case 28:
-            { return new Symbol(sym.Mayor_o_igual_que, yytext());
+            { return new Symbol(sym.Mayor_o_igual_que, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 75: break;
           case 29:
-            { return new Symbol(sym.If, yytext());
+            { return new Symbol(sym.If, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 76: break;
           case 30:
-            { return new Symbol(sym.Or, yytext());
+            { return new Symbol(sym.Or, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 77: break;
           case 31:
-            { return new Symbol(1001, yytext());
+            { return new Symbol(1001, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 78: break;
           case 32:
-            { return new Symbol(sym.Cte_b, yytext());
+            { return new Symbol(sym.Cte_b, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 79: break;
           case 33:
-            { return new Symbol(sym.And, yytext());
+            { return new Symbol(sym.And, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 80: break;
           case 34:
-            { return new Symbol(sym.Int, yytext());
+            { return new Symbol(sym.Int, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 81: break;
           case 35:
-            { return new Symbol(sym.Not, yytext());
+            { return new Symbol(sym.Not, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 82: break;
           case 36:
-            { return new Symbol(sym.Else, yytext());
+            { return new Symbol(sym.Else, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 83: break;
           case 37:
-            { return new Symbol(sym.Then, yytext());
+            { return new Symbol(sym.Then, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 84: break;
           case 38:
-            { return new Symbol(sym.Endif, yytext());
+            { return new Symbol(sym.Endif, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 85: break;
           case 39:
-            { return new Symbol(sym.Float, yytext());
+            { return new Symbol(sym.Float, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 86: break;
           case 40:
-            { return new Symbol(sym.While, yytext());
+            { return new Symbol(sym.While, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 87: break;
           case 41:
-            { return new Symbol(sym.Write, yytext());
+            { return new Symbol(sym.Write, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 88: break;
           case 42:
-            { return new Symbol(sym.String, yytext());
+            { return new Symbol(sym.String, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 89: break;
           case 43:
-            { return new Symbol(sym.Asign_comp, yytext());
+            { return new Symbol(sym.Asign_comp, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 90: break;
           case 44:
-            { return new Symbol(sym.Declare_section, yytext());
+            { return new Symbol(sym.Declare_section, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 91: break;
           case 45:
-            { return new Symbol(sym.Program_section, yytext());
+            { return new Symbol(sym.Program_section, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 92: break;
           case 46:
-            { return new Symbol(sym.Enddeclare_section, yytext());
+            { return new Symbol(sym.Enddeclare_section, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 93: break;
           case 47:
-            { return new Symbol(sym.Endprogram_section, yytext());
+            { return new Symbol(sym.Endprogram_section, yyline + 1, yycolumn + 1, yytext());
             }
           // fall through
           case 94: break;
