@@ -57,3 +57,10 @@ The UI will allow you to load the input file or write in the text area and displ
 
 [Link Documento REGEX](https://docs.google.com/document/d/1_P1gy3LVajhrFVl_u1IOgZa34uSg5c2fvrE33nPvs7E/edit?usp=sharing)  
 [Link Documento GLC](https://docs.google.com/document/d/1ycB5KUmSl6u1RavsXuVSEvb_l2KPiQhOIwfzFiT8jUQ/edit?usp=sharing)
+
+## Utils
+
+```sh
+java -jar .\java-cup-11b-2015.03.26.jar -destdir .\TEOFlex\src\main\java\com\Lexico\FlexLexico\ .\TEOFlex\Sintactico.cup
+java -jar .\jflex-full-1.9.1.jar .\TEOFlex\Lexico.flex -d .\TEOFlex\src\main\java\com\Lexico\FlexLexico\
+```

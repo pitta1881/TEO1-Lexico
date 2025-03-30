@@ -1,12 +1,9 @@
 package com.Lexico.FlexLexico;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java_cup.runtime.*;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
+import java_cup.runtime.*;
+import com.Lexico.FlexLexico.nodes.*;
 
 // Código del parser
 parser code
@@ -30,6 +27,11 @@ action code
     ArrayList<TokenObject> tokenList = new ArrayList<>();
     ArrayList<RuleObject> rulesList = new ArrayList<>();
 	Stack<String> typesStack = new Stack<String>();
+
+	List<NodeDeclareType> nestedDeclareType;
+	List<NodeDeclareType> mainDeclareTypeList;
+	List<String> declareTypesIds = new ArrayList<>();
+	List<NodeExpression> declareTypesType = new ArrayList<>();
 	
     public void addNewRule(int id, String start, RuleItem... rules) {
         ArrayList<RuleItem> rulesTemp = new ArrayList();
@@ -65,6 +67,19 @@ action code
 	    }
 	}
 
+    public List<NodeDeclareType> fixDeclarationTypes(){
+        List<NodeDeclareType> fixedDeclarations = new ArrayList<NodeDeclareType>();
+        int sizeLength = declareTypesIds.size();
+        for (int i = 0; i < sizeLength; i++) {
+            fixedDeclarations.add(new NodeDeclareType(new NodeExpression(declareTypesIds.get(i)), declareTypesType.get(sizeLength - i - 1)));
+        }
+        declareTypesIds.clear();
+        declareTypesType.clear();
+        Collections.reverse(fixedDeclarations);
+        return fixedDeclarations;
+    }
+
+
 :}
 
 // Terminales
@@ -79,31 +94,35 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
                 Cte_s, Cte_f, Cte_i, Cte_b, Write, Id;
 
 // No terminales
-non terminal START, DECLARE_SECTION, DECLARACIONES , DECLARACION, ITEMS, TIPO,
-             PROGRAM_SECTION, PROGRAM, PROGRAM_SECTION_WRITE, PROGRAM_WRITE,
+non terminal START, PROGRAM, PROGRAM_SECTION_WRITE, PROGRAM_WRITE,
+             ITEMS, DECLARACION,
              SENTENCIA, ITERACION, SELECCION, CONDICION, CONDICIONAL, COMPARACION, COMPARADOR,
              EXPRESION, TERMINO, FACTOR,
              ASIGNACION, SALIDA, TEXTO, ASIGNACION_COMPLEJA, ASIGN, OTRA_ASIGN, ASIGN_DERECHA;
 
+non terminal NodeProgramSection PROGRAM_SECTION;
+non terminal NodeExpression TIPO;
+non terminal List<NodeDeclareType> DECLARE_SECTION, DECLARACIONES;
+
 start with START;
 
 // Producción inicial
-START ::= DECLARE_SECTION PROGRAM_SECTION {:
+START ::= DECLARE_SECTION:ds PROGRAM_SECTION:ps {:
                 addNewRule(1, "START -> ",
                     addNonTerminalRuleItem("DECLARE_SECTION"),
                     addNonTerminalRuleItem("PROGRAM_SECTION")
                 );
-                RESULT = new TokenRulesObject(tokenList, rulesList);
+                RESULT = new TokenRulesNodeObject(tokenList, rulesList, new NodeStart(ds, ps));
             :}
             | PROGRAM_SECTION_WRITE {:
                 addNewRule(2, "START -> ",
                     addNonTerminalRuleItem("PROGRAM_SECTION_WRITE")
                 );
-                RESULT = new TokenRulesObject(tokenList, rulesList);
+                RESULT = new TokenRulesNodeObject(tokenList, rulesList, new NodeStart(null, null));
             :};
 
 // Declaraciones
-DECLARE_SECTION ::= Declare_section:ds DECLARACIONES Enddeclare_section:eds {:
+DECLARE_SECTION ::= Declare_section:ds DECLARACIONES:n_dec Enddeclare_section:eds {:
                     tokenList.add(new TokenObject("DECLARE_SECTION", ds, Optional.empty()));
                     tokenList.add(new TokenObject("ENDDECLARE_SECTION", eds, Optional.empty()));
                     addNewRule(3, "DECLARESECTION -> ",
@@ -111,18 +130,24 @@ DECLARE_SECTION ::= Declare_section:ds DECLARACIONES Enddeclare_section:eds {:
                         addNonTerminalRuleItem("DECLARACIONES"),
                         addTerminalRuleItem(eds)
                     );
+                    RESULT = n_dec;
                 :};
 
-DECLARACIONES ::= DECLARACION DECLARACIONES {:					
+DECLARACIONES ::= DECLARACIONES:n_decs DECLARACION:n_dec {:
                     addNewRule(4, "DECLARACIONES -> ",
                         addNonTerminalRuleItem("DECLARACION"),
                         addNonTerminalRuleItem("DECLARACIONES")
                     );
+                    n_decs.addAll(fixDeclarationTypes());
+                    RESULT = n_decs;
                 :}
-                | DECLARACION {:             
+                | DECLARACION {:
                     addNewRule(5, "DECLARACIONES -> ",
                         addNonTerminalRuleItem("DECLARACION")
                     );
+                    mainDeclareTypeList = new ArrayList<NodeDeclareType>();
+                    mainDeclareTypeList.addAll(fixDeclarationTypes());
+                    RESULT = mainDeclareTypeList;
                 :};
 
 DECLARACION ::= Corchete_abierto:ca ITEMS Corchete_cerrado:cc {:
@@ -136,7 +161,7 @@ DECLARACION ::= Corchete_abierto:ca ITEMS Corchete_cerrado:cc {:
                 );
             :};
 
-ITEMS ::=   Id:id Coma:c ITEMS Coma:cc TIPO {:
+ITEMS ::=   Id:id Coma:c ITEMS Coma:cc TIPO:tipo {:
                 tokenList.add(new TokenObject("ID", id, Optional.empty()));
                 tokenList.add(new TokenObject("Coma", c, Optional.empty()));
                 tokenList.add(new TokenObject("Coma", cc, Optional.empty()));               
@@ -147,8 +172,10 @@ ITEMS ::=   Id:id Coma:c ITEMS Coma:cc TIPO {:
                     addTerminalRuleItem(cc),
                     addNonTerminalRuleItem("TIPO")
                 );
+                declareTypesIds.add(id);
+                declareTypesType.add(tipo);
             :}
-            | Id:id Corchete_cerrado:cc Asign_mult:am Corchete_abierto:ca TIPO {:
+            | Id:id Corchete_cerrado:cc Asign_mult:am Corchete_abierto:ca TIPO:tipo {:
                 tokenList.add(new TokenObject("ID", id, Optional.empty()));
                 tokenList.add(new TokenObject("Corchete_cerrado", cc, Optional.empty()));
                 tokenList.add(new TokenObject("Asign_mult", am, Optional.empty()));
@@ -160,6 +187,8 @@ ITEMS ::=   Id:id Coma:c ITEMS Coma:cc TIPO {:
                     addTerminalRuleItem(ca),
                     addNonTerminalRuleItem("TIPO")
                 );
+                declareTypesIds.add(id);
+                declareTypesType.add(tipo);
            :};
 
 TIPO ::= Float:f {:
@@ -168,6 +197,7 @@ TIPO ::= Float:f {:
             addNewRule(9, "TIPO -> ",
                 addTerminalRuleItem(f)
             );
+            RESULT = new NodeExpression(f);
         :}
       | Int:i {:
           addType("INT");
@@ -175,6 +205,7 @@ TIPO ::= Float:f {:
           addNewRule(10, "TIPO -> ",
                 addTerminalRuleItem(i)
             );
+            RESULT = new NodeExpression(i);
       :}
       | String:s {:
           addType("STRING");
@@ -182,6 +213,7 @@ TIPO ::= Float:f {:
           addNewRule(11, "TIPO -> ",
                 addTerminalRuleItem(s)
             );
+            RESULT = new NodeExpression(s);
       :};
 
 // Programa
@@ -193,6 +225,7 @@ PROGRAM_SECTION ::= Program_section:ps PROGRAM Endprogram_section:eps {:
                         addNonTerminalRuleItem("PROGRAM"),
                         addTerminalRuleItem(eps)
                     );
+                    RESULT = new NodeProgramSection();
                 :};
 
 PROGRAM ::= SENTENCIA Punto_y_coma:pyc PROGRAM {:
