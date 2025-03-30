@@ -1,36 +1,60 @@
 graph G {node_start [label="Start"]
-nodo_1077807561 [label="DECLARE SECTION"]
-node_start -- nodo_1077807561
-nodo_93112520 [label=":="]
-nodo_1077807561 -- nodo_93112520
-nodo_934205343 [label="a1"]
-nodo_93112520 -- nodo_934205343
-nodo_424817526 [label="FLOAT"]
-nodo_93112520 -- nodo_424817526
-nodo_115579237 [label=":="]
-nodo_1077807561 -- nodo_115579237
-nodo_1699404793 [label="b1"]
-nodo_115579237 -- nodo_1699404793
-nodo_614066912 [label="INT"]
-nodo_115579237 -- nodo_614066912
-nodo_744010886 [label=":="]
-nodo_1077807561 -- nodo_744010886
-nodo_912931033 [label="p1"]
-nodo_744010886 -- nodo_912931033
-nodo_97298686 [label="FLOAT"]
-nodo_744010886 -- nodo_97298686
-nodo_1852415053 [label=":="]
-nodo_1077807561 -- nodo_1852415053
-nodo_134019458 [label="p2"]
-nodo_1852415053 -- nodo_134019458
-nodo_1622652244 [label="FLOAT"]
-nodo_1852415053 -- nodo_1622652244
-nodo_14445284 [label=":="]
-nodo_1077807561 -- nodo_14445284
-nodo_586483014 [label="p3"]
-nodo_14445284 -- nodo_586483014
-nodo_1118165107 [label="INT"]
-nodo_14445284 -- nodo_1118165107
-nodo_526768230 [label="PROGRAM SECTION"]
-node_start -- nodo_526768230
+nodo_429081982 [label="DECLARE SECTION"]
+node_start -- nodo_429081982
+nodo_1086858125 [label=":="]
+nodo_429081982 -- nodo_1086858125
+nodo_968244440 [label="a1"]
+nodo_1086858125 -- nodo_968244440
+nodo_1505092764 [label="FLOAT"]
+nodo_1086858125 -- nodo_1505092764
+nodo_1660352399 [label=":="]
+nodo_429081982 -- nodo_1660352399
+nodo_1663267863 [label="b1"]
+nodo_1660352399 -- nodo_1663267863
+nodo_1811661911 [label="INT"]
+nodo_1660352399 -- nodo_1811661911
+nodo_496786608 [label=":="]
+nodo_429081982 -- nodo_496786608
+nodo_1216580099 [label="p1"]
+nodo_496786608 -- nodo_1216580099
+nodo_821615816 [label="FLOAT"]
+nodo_496786608 -- nodo_821615816
+nodo_93618172 [label=":="]
+nodo_429081982 -- nodo_93618172
+nodo_2056440354 [label="p2"]
+nodo_93618172 -- nodo_2056440354
+nodo_781554913 [label="FLOAT"]
+nodo_93618172 -- nodo_781554913
+nodo_1484591975 [label=":="]
+nodo_429081982 -- nodo_1484591975
+nodo_2117139467 [label="p3"]
+nodo_1484591975 -- nodo_2117139467
+nodo_312474165 [label="INT"]
+nodo_1484591975 -- nodo_312474165
+nodo_271533595 [label="PROGRAM SECTION"]
+node_start -- nodo_271533595
+nodo_844744751 [label="="]
+nodo_271533595 -- nodo_844744751
+nodo_1813555311 [label="a"]
+nodo_844744751 -- nodo_1813555311
+nodo_1203058133 [label="1"]
+nodo_844744751 -- nodo_1203058133
+nodo_714289102 [label="="]
+nodo_271533595 -- nodo_714289102
+nodo_1459065347 [label="b"]
+nodo_714289102 -- nodo_1459065347
+nodo_2131034978 [label="e"]
+nodo_714289102 -- nodo_2131034978
+nodo_292588234 [label="="]
+nodo_271533595 -- nodo_292588234
+nodo_581843573 [label="c"]
+nodo_292588234 -- nodo_581843573
+nodo_1218696105 [label="2.5"]
+nodo_292588234 -- nodo_1218696105
+nodo_535484364 [label="="]
+nodo_271533595 -- nodo_535484364
+nodo_173615137 [label="d"]
+nodo_535484364 -- nodo_173615137
+nodo_1501025933 [label="z"]
+nodo_535484364 -- nodo_1501025933
 }
