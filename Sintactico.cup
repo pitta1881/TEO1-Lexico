@@ -70,12 +70,12 @@ action code
     public List<NodeDeclareType> fixDeclarationTypes(){
         List<NodeDeclareType> fixedDeclarations = new ArrayList<NodeDeclareType>();
         int sizeLength = declareTypesIds.size();
+        Collections.reverse(declareTypesIds);
         for (int i = 0; i < sizeLength; i++) {
-            fixedDeclarations.add(new NodeDeclareType(new NodeExpression(declareTypesIds.get(i)), declareTypesType.get(sizeLength - i - 1)));
+            fixedDeclarations.add(new NodeDeclareType(new NodeExpression(declareTypesIds.get(i)), declareTypesType.get(i)));
         }
         declareTypesIds.clear();
         declareTypesType.clear();
-        Collections.reverse(fixedDeclarations);
         return fixedDeclarations;
     }
 
@@ -102,7 +102,8 @@ non terminal START, PROGRAM, PROGRAM_SECTION_WRITE, PROGRAM_WRITE,
 
 non terminal NodeProgramSection PROGRAM_SECTION;
 non terminal NodeExpression TIPO;
-non terminal List<NodeDeclareType> DECLARE_SECTION, DECLARACIONES;
+non terminal List<NodeDeclareType> DECLARACIONES;
+non terminal NodeDeclarationSection DECLARE_SECTION;
 
 start with START;
 
@@ -130,7 +131,7 @@ DECLARE_SECTION ::= Declare_section:ds DECLARACIONES:n_dec Enddeclare_section:ed
                         addNonTerminalRuleItem("DECLARACIONES"),
                         addTerminalRuleItem(eds)
                     );
-                    RESULT = n_dec;
+                    RESULT = new NodeDeclarationSection(n_dec);
                 :};
 
 DECLARACIONES ::= DECLARACIONES:n_decs DECLARACION:n_dec {:

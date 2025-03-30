@@ -3,12 +3,12 @@ package com.Lexico.FlexLexico.nodes;
 import java.util.List;
 
 public class NodeStart extends Node {
-    private final List<NodeDeclareType> declareTypeList;
+    private final NodeDeclarationSection nodeDeclarationSection;
     private final NodeProgramSection nodeProgramSection;
 
-    public NodeStart(List<NodeDeclareType> declareTypeList, NodeProgramSection nodeProgramSection) {
+    public NodeStart(NodeDeclarationSection nodeDeclarationSection, NodeProgramSection nodeProgramSection) {
         super("START");
-        this.declareTypeList = declareTypeList;
+        this.nodeDeclarationSection = nodeDeclarationSection;
         this.nodeProgramSection = nodeProgramSection;
     }
 
@@ -25,7 +25,7 @@ public class NodeStart extends Node {
 
         result.append("graph G {");
         result.append(miId + " [label=\"Start\"]\n");
-        result.append(this.declareTypeList.stream().map(declareType -> declareType.graph(miId)).reduce("", String::concat));
+        result.append(this.nodeDeclarationSection.graph(miId));
         result.append(this.nodeProgramSection.graph(miId));
         result.append("}");
 

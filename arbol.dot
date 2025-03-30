@@ -1,34 +1,36 @@
 graph G {node_start [label="Start"]
-nodo_1637910226 [label=":="]
-node_start -- nodo_1637910226
-nodo_2108986790 [label="a1"]
-nodo_1637910226 -- nodo_2108986790
-nodo_598402204 [label="FLOAT"]
-nodo_1637910226 -- nodo_598402204
-nodo_1668714856 [label=":="]
-node_start -- nodo_1668714856
-nodo_100994498 [label="b1"]
-nodo_1668714856 -- nodo_100994498
-nodo_1606791425 [label="INT"]
-nodo_1668714856 -- nodo_1606791425
-nodo_725557345 [label=":="]
-node_start -- nodo_725557345
-nodo_2090146239 [label="p1"]
-nodo_725557345 -- nodo_2090146239
-nodo_1389392114 [label="FLOAT"]
-nodo_725557345 -- nodo_1389392114
-nodo_544185872 [label=":="]
-node_start -- nodo_544185872
-nodo_1912704596 [label="p2"]
-nodo_544185872 -- nodo_1912704596
-nodo_638400842 [label="FLOAT"]
-nodo_544185872 -- nodo_638400842
-nodo_1997245081 [label=":="]
-node_start -- nodo_1997245081
-nodo_734528886 [label="p3"]
-nodo_1997245081 -- nodo_734528886
-nodo_1438997877 [label="INT"]
-nodo_1997245081 -- nodo_1438997877
-nodo_441317870 [label="PROGRAM SECTION"]
-node_start -- nodo_441317870
+nodo_1077807561 [label="DECLARE SECTION"]
+node_start -- nodo_1077807561
+nodo_93112520 [label=":="]
+nodo_1077807561 -- nodo_93112520
+nodo_934205343 [label="a1"]
+nodo_93112520 -- nodo_934205343
+nodo_424817526 [label="FLOAT"]
+nodo_93112520 -- nodo_424817526
+nodo_115579237 [label=":="]
+nodo_1077807561 -- nodo_115579237
+nodo_1699404793 [label="b1"]
+nodo_115579237 -- nodo_1699404793
+nodo_614066912 [label="INT"]
+nodo_115579237 -- nodo_614066912
+nodo_744010886 [label=":="]
+nodo_1077807561 -- nodo_744010886
+nodo_912931033 [label="p1"]
+nodo_744010886 -- nodo_912931033
+nodo_97298686 [label="FLOAT"]
+nodo_744010886 -- nodo_97298686
+nodo_1852415053 [label=":="]
+nodo_1077807561 -- nodo_1852415053
+nodo_134019458 [label="p2"]
+nodo_1852415053 -- nodo_134019458
+nodo_1622652244 [label="FLOAT"]
+nodo_1852415053 -- nodo_1622652244
+nodo_14445284 [label=":="]
+nodo_1077807561 -- nodo_14445284
+nodo_586483014 [label="p3"]
+nodo_14445284 -- nodo_586483014
+nodo_1118165107 [label="INT"]
+nodo_14445284 -- nodo_1118165107
+nodo_526768230 [label="PROGRAM SECTION"]
+node_start -- nodo_526768230
 }
