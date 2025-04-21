@@ -1,14 +1,10 @@
 package com.Lexico.FlexLexico.nodes;
 
-import java.util.List;
-
 public class NodeStart extends Node {
-    private final NodeDeclarationSection nodeDeclarationSection;
     private final NodeProgramSection nodeProgramSection;
 
-    public NodeStart(NodeDeclarationSection nodeDeclarationSection, NodeProgramSection nodeProgramSection) {
+    public NodeStart(NodeProgramSection nodeProgramSection) {
         super("START");
-        this.nodeDeclarationSection = nodeDeclarationSection;
         this.nodeProgramSection = nodeProgramSection;
     }
 
@@ -25,7 +21,6 @@ public class NodeStart extends Node {
 
         result.append("graph G {");
         result.append(miId + " [label=\"Start\"]\n");
-        result.append(this.nodeDeclarationSection.graph(miId));
         result.append(this.nodeProgramSection.graph(miId));
         result.append("}");
 

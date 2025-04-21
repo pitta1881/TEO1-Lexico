@@ -65,18 +65,6 @@ action code
 	    }
 	}
 
-    public List<NodeDeclareType> fixDeclarationTypes(){
-        List<NodeDeclareType> fixedDeclarations = new ArrayList<NodeDeclareType>();
-        int sizeLength = declareTypesIds.size();
-        Collections.reverse(declareTypesIds);
-        for (int i = 0; i < sizeLength; i++) {
-            fixedDeclarations.add(new NodeDeclareType(new NodeExpression(declareTypesIds.get(i)), declareTypesType.get(i)));
-        }
-        declareTypesIds.clear();
-        declareTypesType.clear();
-        return fixedDeclarations;
-    }
-
     public List<NodeSimpleAssign> fixComplexAssign(){
         List<NodeSimpleAssign> fixedDeclarations = new ArrayList<NodeSimpleAssign>();
         int sizeLength = declareTypesIds.size();
@@ -104,7 +92,7 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
                 Cte_s, Cte_f, Cte_i, Cte_b, Write, Id;
 
 // No terminales
-non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE,
+non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE_SECTION,
              ITEMS, DECLARACION,
              ITERACION, SELECCION, CONDICION, CONDICIONAL, COMPARACION, COMPARADOR,
              EXPRESION, TERMINO, FACTOR,
@@ -112,8 +100,6 @@ non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE,
 
 non terminal NodeProgramSection PROGRAM_SECTION;
 non terminal NodeExpression TIPO, ASIGN_DERECHA;
-non terminal List<NodeDeclareType> DECLARACIONES;
-non terminal NodeDeclarationSection DECLARE_SECTION;
 non terminal List<NodeSimpleAssign> ASIGNACION_COMPLEJA;
 non terminal List<NodeSentence> PROGRAM;
 non terminal NodeSentence SENTENCIA;
@@ -121,22 +107,22 @@ non terminal NodeSentence SENTENCIA;
 start with START;
 
 // Producción inicial
-START ::= DECLARE_SECTION:ds PROGRAM_SECTION:ps {:
+START ::= DECLARE_SECTION PROGRAM_SECTION:ps {:
                 addNewRule(1, "START -> ",
                     addNonTerminalRuleItem("DECLARE_SECTION"),
                     addNonTerminalRuleItem("PROGRAM_SECTION")
                 );
-                RESULT = new TokenRulesNodeObject(tokenList, rulesList, new NodeStart(ds, ps));
+                RESULT = new TokenRulesNodeObject(tokenList, rulesList, new NodeStart(ps));
             :}
             | PROGRAM_SECTION_WRITE {:
                 addNewRule(2, "START -> ",
                     addNonTerminalRuleItem("PROGRAM_SECTION_WRITE")
                 );
-                RESULT = new TokenRulesNodeObject(tokenList, rulesList, new NodeStart(null, null));
+                RESULT = new TokenRulesNodeObject(tokenList, rulesList, new NodeStart(null));
             :};
 
 // Declaraciones
-DECLARE_SECTION ::= Declare_section:ds DECLARACIONES:n_dec Enddeclare_section:eds {:
+DECLARE_SECTION ::= Declare_section:ds DECLARACIONES Enddeclare_section:eds {:
                     tokenList.add(new TokenObject("DECLARE_SECTION", ds, Optional.empty()));
                     tokenList.add(new TokenObject("ENDDECLARE_SECTION", eds, Optional.empty()));
                     addNewRule(3, "DECLARESECTION -> ",
@@ -144,24 +130,18 @@ DECLARE_SECTION ::= Declare_section:ds DECLARACIONES:n_dec Enddeclare_section:ed
                         addNonTerminalRuleItem("DECLARACIONES"),
                         addTerminalRuleItem(eds)
                     );
-                    RESULT = new NodeDeclarationSection(n_dec);
                 :};
 
-DECLARACIONES ::= DECLARACIONES:n_decs DECLARACION:n_dec {:
+DECLARACIONES ::= DECLARACIONES DECLARACION {:
                     addNewRule(4, "DECLARACIONES -> ",
                         addNonTerminalRuleItem("DECLARACION"),
                         addNonTerminalRuleItem("DECLARACIONES")
                     );
-                    n_decs.addAll(fixDeclarationTypes());
-                    RESULT = n_decs;
                 :}
                 | DECLARACION {:
                     addNewRule(5, "DECLARACIONES -> ",
                         addNonTerminalRuleItem("DECLARACION")
                     );
-                    List<NodeDeclareType> mainDeclareTypeList = new ArrayList<NodeDeclareType>();
-                    mainDeclareTypeList.addAll(fixDeclarationTypes());
-                    RESULT = mainDeclareTypeList;
                 :};
 
 DECLARACION ::= Corchete_abierto:ca ITEMS Corchete_cerrado:cc {:
@@ -186,8 +166,6 @@ ITEMS ::=   Id:id Coma:c ITEMS Coma:cc TIPO:tipo {:
                     addTerminalRuleItem(cc),
                     addNonTerminalRuleItem("TIPO")
                 );
-                declareTypesIds.add(id);
-                declareTypesType.add(tipo);
             :}
             | Id:id Corchete_cerrado:cc Asign_mult:am Corchete_abierto:ca TIPO:tipo {:
                 tokenList.add(new TokenObject("ID", id, Optional.empty()));
@@ -201,8 +179,6 @@ ITEMS ::=   Id:id Coma:c ITEMS Coma:cc TIPO:tipo {:
                     addTerminalRuleItem(ca),
                     addNonTerminalRuleItem("TIPO")
                 );
-                declareTypesIds.add(id);
-                declareTypesType.add(tipo);
            :};
 
 TIPO ::= Float:f {:
@@ -211,7 +187,6 @@ TIPO ::= Float:f {:
             addNewRule(9, "TIPO -> ",
                 addTerminalRuleItem(f)
             );
-            RESULT = new NodeExpression(f);
         :}
       | Int:i {:
           addType("INT");
@@ -219,7 +194,6 @@ TIPO ::= Float:f {:
           addNewRule(10, "TIPO -> ",
                 addTerminalRuleItem(i)
             );
-            RESULT = new NodeExpression(i);
       :}
       | String:s {:
           addType("STRING");
@@ -227,7 +201,6 @@ TIPO ::= Float:f {:
           addNewRule(11, "TIPO -> ",
                 addTerminalRuleItem(s)
             );
-            RESULT = new NodeExpression(s);
       :};
 
 // Programa
