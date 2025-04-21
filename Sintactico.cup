@@ -98,10 +98,9 @@ non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE
              EXPRESION, TERMINO, FACTOR,
              ASIGNACION, SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
 
-non terminal NodeProgramSection PROGRAM_SECTION;
 non terminal NodeExpression TIPO, ASIGN_DERECHA;
 non terminal List<NodeSimpleAssign> ASIGNACION_COMPLEJA;
-non terminal List<NodeSentence> PROGRAM;
+non terminal List<NodeSentence> PROGRAM, PROGRAM_SECTION;
 non terminal NodeSentence SENTENCIA;
 
 start with START;
@@ -212,7 +211,7 @@ PROGRAM_SECTION ::= Program_section:ps PROGRAM:n_prog Endprogram_section:eps {:
                         addNonTerminalRuleItem("PROGRAM"),
                         addTerminalRuleItem(eps)
                     );
-                    RESULT = new NodeProgramSection(n_prog);
+                    RESULT = n_prog;
                 :};
 
 PROGRAM ::= PROGRAM:n_prog SENTENCIA:n_sent Punto_y_coma:pyc {:
