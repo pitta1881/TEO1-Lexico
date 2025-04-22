@@ -95,13 +95,14 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
 non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE_SECTION,
              ITEMS, DECLARACION,
              ITERACION, SELECCION, CONDICION, CONDICIONAL, COMPARACION, COMPARADOR,
-             EXPRESION, TERMINO, FACTOR,
-             ASIGNACION, SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
+             SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
 
-non terminal Node TIPO, ASIGN_DERECHA;
+non terminal Node TIPO, ASIGN_DERECHA, FACTOR;
 non terminal List<NodeComplexAssign> ASIGNACION_COMPLEJA;
 non terminal List<NodeSentence> PROGRAM, PROGRAM_SECTION;
 non terminal NodeSentence SENTENCIA;
+non terminal NodeSimpleAssign ASIGNACION;
+non terminal NodeArithmetic EXPRESION, TERMINO;
 
 start with START;
 
@@ -233,11 +234,11 @@ PROGRAM ::= PROGRAM:n_prog SENTENCIA:n_sent Punto_y_coma:pyc {:
                 RESULT = mainSentences;
             :};
 
-SENTENCIA ::= ASIGNACION {:
+SENTENCIA ::= ASIGNACION:n_simpleAssign {:
                 addNewRule(15, "ASIGNACION -> ",
                     addNonTerminalRuleItem("ASIGNACION")
                 );
-                RESULT = new NodeSentence();
+                RESULT = new NodeSentence(n_simpleAssign);
             :}
             | ITERACION {:
                 addNewRule(16, "ITERACION -> ",
@@ -251,11 +252,11 @@ SENTENCIA ::= ASIGNACION {:
                 );
                 RESULT = new NodeSentence();
             :}
-            | ASIGNACION_COMPLEJA:n_asignComp {:
+            | ASIGNACION_COMPLEJA:n_complexAssign {:
                   addNewRule(18, "ASIGNACION_COMPLEJA -> ",
                       addNonTerminalRuleItem("ASIGNACION_COMPLEJA")
                   );
-                  RESULT = new NodeSentence(n_asignComp);
+                  RESULT = new NodeSentence(n_complexAssign);
             :}
             | SALIDA:n_sal {:
                 addNewRule(19, "SALIDA -> ",
@@ -264,60 +265,60 @@ SENTENCIA ::= ASIGNACION {:
                 RESULT = new NodeSentence();
             :};
 
-ASIGNACION ::= Id:id Asignacion:a EXPRESION {:
+ASIGNACION ::= Id:id Asignacion:a EXPRESION:exp {:
                 tokenList.add(new TokenObject("ASIGNACION", a, Optional.empty()));
                 addNewRule(20, "ASIGNACION -> ",
                     addTerminalRuleItem(id),
                     addTerminalRuleItem(a),
                     addNonTerminalRuleItem("EXPRESION")
                 );
+                RESULT = new NodeSimpleAssign(new Node(id), exp);
             :};
 
-EXPRESION ::= EXPRESION Suma:s TERMINO {:
+EXPRESION ::= EXPRESION:exp Suma:s TERMINO:term {:
                 tokenList.add(new TokenObject("Suma", s, Optional.empty()));
                 addNewRule(21, "EXPRESION -> ",
                     addNonTerminalRuleItem("EXPRESION"),
                     addTerminalRuleItem(s),
                     addNonTerminalRuleItem("TERMINO")
                 );
+                RESULT = new NodeArithmetic("+", exp, term);
             :}
-            | EXPRESION Resta:r TERMINO {:
+            | EXPRESION:exp Resta:r TERMINO:term {:
                 tokenList.add(new TokenObject("Resta", r, Optional.empty()));
                 addNewRule(22, "EXPRESION -> ",
                     addNonTerminalRuleItem("EXPRESION"),
                     addTerminalRuleItem(r),
                     addNonTerminalRuleItem("TERMINO")
                 );
+                RESULT = new NodeArithmetic("-", exp, term);
             :}
-            | TERMINO {:
+            | TERMINO:term {:
               addNewRule(23, "EXPRESION -> ",
                   addNonTerminalRuleItem("TERMINO")
               );
+                RESULT = term;
           :};
 
-TERMINO ::= TERMINO Multiplicacion:m FACTOR {:
+TERMINO ::= TERMINO:term Multiplicacion:m FACTOR:fact {:
                 tokenList.add(new TokenObject("Multiplicacion", m, Optional.empty()));
                 addNewRule(24, "TERMINO -> ",
                     addNonTerminalRuleItem("TERMINO"),
                     addTerminalRuleItem(m),
                     addNonTerminalRuleItem("FACTOR")
                 );
+                RESULT = new NodeArithmetic("*", term, fact);
             :}
-            | TERMINO Division:d FACTOR {:
+            | TERMINO:term Division:d FACTOR:fact {:
                 tokenList.add(new TokenObject("Division", d, Optional.empty()));
                 addNewRule(25, "TERMINO -> ",
                     addNonTerminalRuleItem("TERMINO"),
                     addTerminalRuleItem(d),
                     addNonTerminalRuleItem("FACTOR")
                 );
+                RESULT = new NodeArithmetic("/", term, fact);
             :}
-            | FACTOR {:
-              addNewRule(26, "TERMINO -> ",
-                  addNonTerminalRuleItem("FACTOR")
-              );
-          :};
-
-FACTOR ::= Parentesis_abierto:pa EXPRESION Parentesis_cerrado:pc {:
+            | Parentesis_abierto:pa EXPRESION:exp Parentesis_cerrado:pc {:
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
                 addNewRule(27, "FACTOR -> ",
@@ -325,29 +326,41 @@ FACTOR ::= Parentesis_abierto:pa EXPRESION Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("EXPRESION"),
                     addTerminalRuleItem(pc)
                 );
+                RESULT = exp;
             :}
-            | Id:id {:
+            | FACTOR:fact {:
+                addNewRule(26, "TERMINO -> ",
+                    addNonTerminalRuleItem("FACTOR")
+                );
+                RESULT = new NodeArithmetic(fact);
+          :};
+
+FACTOR ::=  Id:id {:
                 addNewRule(28, "FACTOR -> ",
                     addTerminalRuleItem(id)
                 );
+                RESULT = new Node(id);
             :}
             | Cte_f:f {:
                 tokenList.add(new TokenObject("Cte_f", f, Optional.empty()));
                 addNewRule(29, "FACTOR -> ",
                     addTerminalRuleItem(f)
                 );
+                RESULT = new Node(f);
             :}
             | Cte_i:e {:
                 tokenList.add(new TokenObject("Cte_i", e, Optional.empty()));
                 addNewRule(30, "FACTOR -> ",
                     addTerminalRuleItem(e)
                 );
+                RESULT = new Node(e);
             :}
             | Cte_b:b {:
                 tokenList.add(new TokenObject("Cte_b", b, Optional.empty()));
                 addNewRule(31, "FACTOR -> ",
                     addTerminalRuleItem(b)
                 );
+                RESULT = new Node(b);
             :};
 
 ITERACION ::= While:w Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Llave_abierta:la PROGRAM Llave_cerrada:lc {:

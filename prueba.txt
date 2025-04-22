@@ -13,6 +13,10 @@ PROGRAM.SECTION
 	variableExpMult = 37 * 3;
 	variableExpDiv = 37 / 3;
 	variableExpPar = (37 / 3);
+	variableExp1 = 37 + 3 - 5;
+	variableExp2 = 37 + 3 * 5;
+	variableExp3 = (37 + 3) / 5;
+	variableExp3 = (37 + 3 - 4) / 5;
 
 	WHILE ( 37 == 37 ) {
 		test = 1;
