@@ -1,11 +1,12 @@
 package com.Lexico.FlexLexico.nodes;
 
-public class NodeBinaryExpression extends NodeExpression {
-    public final NodeExpression left;
-    public final NodeExpression right;
+public class NodeComplexAssign extends Node {
 
-    public NodeBinaryExpression(String nombre, NodeExpression left, NodeExpression right) {
-        super(nombre);
+    public final Node left;
+    public final Node right;
+
+    public NodeComplexAssign(Node left, Node right) {
+        super("=");
         this.left = left;
         this.right = right;
     }

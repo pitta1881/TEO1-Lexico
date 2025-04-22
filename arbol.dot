@@ -1,26 +1,26 @@
 graph G {node_start [label="Start"]
-nodo_1620616282 [label="="]
-node_start -- nodo_1620616282
-nodo_1508167779 [label="a"]
-nodo_1620616282 -- nodo_1508167779
-nodo_2122314649 [label="1"]
-nodo_1620616282 -- nodo_2122314649
-nodo_190485095 [label="="]
-node_start -- nodo_190485095
-nodo_251741253 [label="b"]
-nodo_190485095 -- nodo_251741253
-nodo_1880746510 [label="e"]
-nodo_190485095 -- nodo_1880746510
-nodo_1903901871 [label="="]
-node_start -- nodo_1903901871
-nodo_787300685 [label="c"]
-nodo_1903901871 -- nodo_787300685
-nodo_734731193 [label="2.5"]
-nodo_1903901871 -- nodo_734731193
-nodo_339598676 [label="="]
-node_start -- nodo_339598676
-nodo_1015743800 [label="d"]
-nodo_339598676 -- nodo_1015743800
-nodo_2024328397 [label="z"]
-nodo_339598676 -- nodo_2024328397
+nodo_1308560590 [label="="]
+node_start -- nodo_1308560590
+nodo_1331350146 [label="a"]
+nodo_1308560590 -- nodo_1331350146
+nodo_733573773 [label="1"]
+nodo_1308560590 -- nodo_733573773
+nodo_2057127880 [label="="]
+node_start -- nodo_2057127880
+nodo_906507672 [label="b"]
+nodo_2057127880 -- nodo_906507672
+nodo_799012609 [label="e"]
+nodo_2057127880 -- nodo_799012609
+nodo_1330824549 [label="="]
+node_start -- nodo_1330824549
+nodo_1608611904 [label="c"]
+nodo_1330824549 -- nodo_1608611904
+nodo_682767057 [label="2.5"]
+nodo_1330824549 -- nodo_682767057
+nodo_2017849145 [label="="]
+node_start -- nodo_2017849145
+nodo_560293049 [label="d"]
+nodo_2017849145 -- nodo_560293049
+nodo_1972513709 [label="z"]
+nodo_2017849145 -- nodo_1972513709
 }

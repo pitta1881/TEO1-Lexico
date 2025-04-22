@@ -29,7 +29,7 @@ action code
 	Stack<String> typesStack = new Stack<String>();
 
 	List<String> declareTypesIds = new ArrayList<>();
-	List<NodeExpression> declareTypesType = new ArrayList<>();
+	List<Node> declareTypesType = new ArrayList<>();
 	
     public void addNewRule(int id, String start, RuleItem... rules) {
         ArrayList<RuleItem> rulesTemp = new ArrayList();
@@ -65,12 +65,12 @@ action code
 	    }
 	}
 
-    public List<NodeSimpleAssign> fixComplexAssign(){
-        List<NodeSimpleAssign> fixedDeclarations = new ArrayList<NodeSimpleAssign>();
+    public List<NodeComplexAssign> fixComplexAssign(){
+        List<NodeComplexAssign> fixedDeclarations = new ArrayList<NodeComplexAssign>();
         int sizeLength = declareTypesIds.size();
         Collections.reverse(declareTypesIds);
         for (int i = 0; i < sizeLength; i++) {
-            fixedDeclarations.add(new NodeSimpleAssign(new NodeExpression(declareTypesIds.get(i)), declareTypesType.get(i)));
+            fixedDeclarations.add(new NodeComplexAssign(new Node(declareTypesIds.get(i)), declareTypesType.get(i)));
         }
         declareTypesIds.clear();
         declareTypesType.clear();
@@ -98,8 +98,8 @@ non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE
              EXPRESION, TERMINO, FACTOR,
              ASIGNACION, SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
 
-non terminal NodeExpression TIPO, ASIGN_DERECHA;
-non terminal List<NodeSimpleAssign> ASIGNACION_COMPLEJA;
+non terminal Node TIPO, ASIGN_DERECHA;
+non terminal List<NodeComplexAssign> ASIGNACION_COMPLEJA;
 non terminal List<NodeSentence> PROGRAM, PROGRAM_SECTION;
 non terminal NodeSentence SENTENCIA;
 
@@ -564,35 +564,35 @@ ASIGN_DERECHA ::= Id:id {:
                       addNewRule(53, "FACTOR -> ",
                           addTerminalRuleItem(id)
                       );
-                      RESULT = new NodeExpression(id);
+                      RESULT = new Node(id);
                   :}
                   | Cte_f:f {:
                       tokenList.add(new TokenObject("Cte_f", f, Optional.empty()));
                       addNewRule(54, "FACTOR -> ",
                           addTerminalRuleItem(f)
                       );
-                      RESULT = new NodeExpression(f);
+                      RESULT = new Node(f);
                   :}
                   | Cte_i:e {:
                       tokenList.add(new TokenObject("Cte_i", e, Optional.empty()));
                       addNewRule(55, "FACTOR -> ",
                           addTerminalRuleItem(e)
                       );
-                        RESULT = new NodeExpression(e);
+                        RESULT = new Node(e);
                   :}
                   | Cte_b:b {:
                       tokenList.add(new TokenObject("Cte_b", b, Optional.empty()));
                       addNewRule(56, "FACTOR -> ",
                           addTerminalRuleItem(b)
                       );
-                        RESULT = new NodeExpression(b);
+                        RESULT = new Node(b);
                   :}
                   | Cte_s:s {:
                     tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
                     addNewRule(57, "FACTOR -> ",
                         addTerminalRuleItem(s)
                     );
-                    RESULT = new NodeExpression(s);
+                    RESULT = new Node(s);
                 :};
 
 SALIDA ::= Write:w Parentesis_abierto:pa TEXTO Parentesis_cerrado:pc {:
