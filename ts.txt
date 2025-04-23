@@ -14,6 +14,7 @@ _5                                      	Cte_i                                  
 _4                                      	Cte_i                                   	                                        	4                                       
 _2                                      	Cte_i                                   	                                        	2                                       
 _0                                      	Cte_i                                   	                                        	0                                       
-_40                                     	Cte_i                                   	                                        	40                                      
-_35                                     	Cte_i                                   	                                        	35                                      
+_10                                     	Cte_i                                   	                                        	10                                      
+_100                                    	Cte_i                                   	                                        	100                                     
+_50                                     	Cte_i                                   	                                        	50                                      
 _"hola"                                 	Cte_s                                   	                                        	"hola"                                  

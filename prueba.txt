@@ -34,12 +34,16 @@ PROGRAM.SECTION
 		test2 = 0;
 	ENDIF;
 	
-	WHILE ( 37 == 37 ) {
-		test = 1;
+	WHILE ( i <= 10 ) {
+		test = i * 2;
+		i = i + 1;
 	};
 
-	WHILE (( 37 == 37 ) AND (40 < 35)) {
-		test = 1;
+	WHILE (( i <= 100 ) OR (m == true)) {
+		i = i + 1;
+		IF (i == 50) THEN
+			m = false;
+		ENDIF;
 	};
 
 	WRITE ( "hola" );

@@ -94,7 +94,6 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
 // No terminales
 non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE_SECTION,
              ITEMS, DECLARACION,
-             ITERACION,
              SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
 
 non terminal Node TIPO, ASIGN_DERECHA, FACTOR, COMPARADOR, CONDICIONAL;
@@ -106,6 +105,7 @@ non terminal NodeArithmetic EXPRESION, TERMINO;
 non terminal NodeComparation COMPARACION;
 non terminal NodeLogical CONDICION;
 non terminal NodeIf SELECCION;
+non terminal NodeWhile ITERACION;
 
 start with START;
 
@@ -243,11 +243,11 @@ SENTENCIA ::= ASIGNACION:n_simpleAssign {:
                 );
                 RESULT = new NodeSentence(n_simpleAssign);
             :}
-            | ITERACION {:
+            | ITERACION:n_itera {:
                 addNewRule(16, "ITERACION -> ",
                     addNonTerminalRuleItem("ITERACION")
                 );
-                RESULT = new NodeSentence();
+                RESULT = new NodeSentence(n_itera);
             :}
             | SELECCION:n_if {:
                 addNewRule(17, "SELECCION -> ",
@@ -366,7 +366,7 @@ FACTOR ::=  Id:id {:
                 RESULT = new Node(b);
             :};
 
-ITERACION ::= While:w Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Llave_abierta:la PROGRAM Llave_cerrada:lc {:
+ITERACION ::= While:w Parentesis_abierto:pa CONDICION:cond Parentesis_cerrado:pc Llave_abierta:la PROGRAM:blockBody Llave_cerrada:lc {:
                 tokenList.add(new TokenObject("While", w, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
@@ -381,6 +381,7 @@ ITERACION ::= While:w Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Llav
                     addNonTerminalRuleItem("PROGRAM"),
                     addTerminalRuleItem(lc)
                 );
+                RESULT = new NodeWhile(cond, blockBody);
             :};
 
 CONDICION ::= Parentesis_abierto:pa COMPARACION:comp Parentesis_cerrado:pc {:
