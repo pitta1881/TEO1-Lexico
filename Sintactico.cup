@@ -94,15 +94,18 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
 // No terminales
 non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE_SECTION,
              ITEMS, DECLARACION,
-             ITERACION, SELECCION, CONDICION, CONDICIONAL, COMPARACION, COMPARADOR,
+             ITERACION,
              SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
 
-non terminal Node TIPO, ASIGN_DERECHA, FACTOR;
+non terminal Node TIPO, ASIGN_DERECHA, FACTOR, COMPARADOR, CONDICIONAL;
 non terminal List<NodeComplexAssign> ASIGNACION_COMPLEJA;
 non terminal List<NodeSentence> PROGRAM, PROGRAM_SECTION;
 non terminal NodeSentence SENTENCIA;
 non terminal NodeSimpleAssign ASIGNACION;
 non terminal NodeArithmetic EXPRESION, TERMINO;
+non terminal NodeComparation COMPARACION;
+non terminal NodeLogical CONDICION;
+non terminal NodeIf SELECCION;
 
 start with START;
 
@@ -246,11 +249,11 @@ SENTENCIA ::= ASIGNACION:n_simpleAssign {:
                 );
                 RESULT = new NodeSentence();
             :}
-            | SELECCION {:
+            | SELECCION:n_if {:
                 addNewRule(17, "SELECCION -> ",
                     addNonTerminalRuleItem("SELECCION")
                 );
-                RESULT = new NodeSentence();
+                RESULT = new NodeSentence(n_if);
             :}
             | ASIGNACION_COMPLEJA:n_complexAssign {:
                   addNewRule(18, "ASIGNACION_COMPLEJA -> ",
@@ -380,7 +383,7 @@ ITERACION ::= While:w Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Llav
                 );
             :};
 
-CONDICION ::= Parentesis_abierto:pa COMPARACION Parentesis_cerrado:pc {:
+CONDICION ::= Parentesis_abierto:pa COMPARACION:comp Parentesis_cerrado:pc {:
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
                 addNewRule(33, "CONDICION -> ",
@@ -388,8 +391,9 @@ CONDICION ::= Parentesis_abierto:pa COMPARACION Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("COMPARACION"),
                     addTerminalRuleItem(pc)
                 );
+                RESULT = new NodeLogical(comp);
             :}
-            | Parentesis_abierto:pa COMPARACION Parentesis_cerrado:pc CONDICIONAL Parentesis_abierto:pa2 COMPARACION Parentesis_cerrado:pc2 {:
+            | Parentesis_abierto:pa COMPARACION:comp1 Parentesis_cerrado:pc CONDICIONAL:cond Parentesis_abierto:pa2 COMPARACION:comp2 Parentesis_cerrado:pc2 {:
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_abierto", pa2, Optional.empty()));
@@ -403,8 +407,9 @@ CONDICION ::= Parentesis_abierto:pa COMPARACION Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("COMPARACION"),
                     addTerminalRuleItem(pc2)
                 );
+                RESULT = new NodeLogical(cond,comp1,comp2);
             :}
-            | Not:n Parentesis_abierto:pa COMPARACION Parentesis_cerrado:pc {:
+            | Not:n Parentesis_abierto:pa COMPARACION:comp Parentesis_cerrado:pc {:
                 tokenList.add(new TokenObject("Not", n, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
@@ -414,26 +419,30 @@ CONDICION ::= Parentesis_abierto:pa COMPARACION Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("COMPARACION"),
                     addTerminalRuleItem(pc)
                 );
+                RESULT = new NodeLogical(comp);
             :}
-            | COMPARACION CONDICIONAL COMPARACION {:
+            | COMPARACION:comp1 CONDICIONAL:cond COMPARACION:comp2 {:
                 addNewRule(36, "CONDICION -> ",
                     addNonTerminalRuleItem("COMPARACION"),
                     addNonTerminalRuleItem("CONDICIONAL"),
                     addNonTerminalRuleItem("COMPARACION")
                 );
+                RESULT = new NodeLogical(cond,comp1,comp2);
             :}
-             | COMPARACION {:
+             | COMPARACION:comp {:
                 addNewRule(37, "COMPARACION -> ",
                     addNonTerminalRuleItem("COMPARACION")
                 );
+                RESULT = new NodeLogical(comp);
             :};
 
-COMPARACION ::= EXPRESION COMPARADOR EXPRESION {:
+COMPARACION ::= EXPRESION:exp COMPARADOR:comp EXPRESION:exp2 {:
                 addNewRule(38, "COMPARACION -> ",
                     addNonTerminalRuleItem("EXPRESION"),
                     addNonTerminalRuleItem("COMPARADOR"),
                     addNonTerminalRuleItem("EXPRESION")
                 );
+                RESULT = new NodeComparation(comp, exp, exp2);
             :};
 
 COMPARADOR ::= Menor_que:m {:
@@ -441,36 +450,42 @@ COMPARADOR ::= Menor_que:m {:
                 addNewRule(39, "COMPARADOR -> ",
                     addTerminalRuleItem(m)
                 );
+                RESULT = new Node(m);
             :}
             | Mayor_que:m {:
                 tokenList.add(new TokenObject("Mayor_que", m, Optional.empty()));
                 addNewRule(40, "COMPARADOR -> ",
                     addTerminalRuleItem(m)
                 );
+                RESULT = new Node(m);
             :}
             | Mayor_o_igual_que:m {:
                 tokenList.add(new TokenObject("Mayor_o_igual_que", m, Optional.empty()));
                 addNewRule(41, "COMPARADOR -> ",
                     addTerminalRuleItem(m)
                 );
+                RESULT = new Node(m);
             :}
             | Menor_o_igual_que:m {:
                 tokenList.add(new TokenObject("Menor_o_igual_que", m, Optional.empty()));
                 addNewRule(42, "COMPARADOR -> ",
                     addTerminalRuleItem(m)
                 );
+                RESULT = new Node(m);
             :}
             | Igual:m {:
                 tokenList.add(new TokenObject("Igual", m, Optional.empty()));
                 addNewRule(43, "COMPARADOR -> ",
                     addTerminalRuleItem(m)
                 );
+                RESULT = new Node(m);
             :}
             | Diferente:m {:
                 tokenList.add(new TokenObject("Diferente", m, Optional.empty()));
                 addNewRule(44, "COMPARADOR -> ",
                     addTerminalRuleItem(m)
                 );
+                RESULT = new Node(m);
             :};
 
 CONDICIONAL ::= And:a {:
@@ -478,15 +493,17 @@ CONDICIONAL ::= And:a {:
                 addNewRule(45, "CONDICIONAL -> ",
                     addTerminalRuleItem(a)
                 );
+                RESULT = new Node(a);
             :}
             | Or:o {:
                 tokenList.add(new TokenObject("Or", o, Optional.empty()));
                 addNewRule(46, "CONDICIONAL -> ",
                     addTerminalRuleItem(o)
                 );
+                RESULT = new Node(o);
             :};
 
-SELECCION ::= If:i Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Then:t PROGRAM Else:e PROGRAM Endif:ei {:
+SELECCION ::= If:i Parentesis_abierto:pa CONDICION:cond Parentesis_cerrado:pc Then:t PROGRAM:progThen Else:e PROGRAM:progElse Endif:ei {:
                 tokenList.add(new TokenObject("If", i, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
@@ -504,8 +521,9 @@ SELECCION ::= If:i Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Then:t 
                     addNonTerminalRuleItem("PROGRAM"),
                     addTerminalRuleItem(ei)
                 );
+                RESULT = new NodeIf(cond, progThen, progElse);
             :}
-            | If:i Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Then:t PROGRAM Endif:ei {:
+            | If:i Parentesis_abierto:pa CONDICION:cond Parentesis_cerrado:pc Then:t PROGRAM:progThen Endif:ei {:
                 tokenList.add(new TokenObject("If", i, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
@@ -520,6 +538,7 @@ SELECCION ::= If:i Parentesis_abierto:pa CONDICION Parentesis_cerrado:pc Then:t 
                     addNonTerminalRuleItem("PROGRAM"),
                     addTerminalRuleItem(ei)
                 );
+                RESULT = new NodeIf(cond, progThen, null);
             :};
 
 ASIGNACION_COMPLEJA ::= Asign_comp:ac Parentesis_abierto:pa ASIGN Parentesis_cerrado:pc {:

@@ -4,6 +4,8 @@ DECLARE.SECTION
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
+	AsigComp([a, b, c, d] : [1, e, 2.5, z]);
+
 	variableE = 37;
 	variableF = 3.7;
 	variableB = 0b00;
@@ -18,13 +20,6 @@ PROGRAM.SECTION
 	variableExp3 = (37 + 3) / 5;
 	variableExp3 = (37 + 3 - 4) / 5;
 
-	WHILE ( 37 == 37 ) {
-		test = 1;
-	};
-	WHILE (( 37 == 37 ) AND (40 < 35)) {
-		test = 1;
-	};
-
 	IF ( 2 == 3) THEN
 		test2 = 1;
 	ENDIF;
@@ -33,7 +28,19 @@ PROGRAM.SECTION
 		test2 = 1;
 	ENDIF;
 
-	AsigComp([a, b, c, d] : [1, e, 2.5, z]);
+	IF (( 2 == 3+2) AND ( (2+4) /3 < 3)) THEN
+		test2 = 1;
+	ELSE
+		test2 = 0;
+	ENDIF;
+	
+	WHILE ( 37 == 37 ) {
+		test = 1;
+	};
+
+	WHILE (( 37 == 37 ) AND (40 < 35)) {
+		test = 1;
+	};
 
 	WRITE ( "hola" );
 	WRITE ( varId );
