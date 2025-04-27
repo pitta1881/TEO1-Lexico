@@ -8,6 +8,7 @@ public class NodeSentence extends Node {
     private List<NodeComplexAssign> complexAssign = null;
     private NodeIf nodeIf = null;
     private NodeWhile nodeWhile = null;
+    private NodeWrite nodeWrite;
 
     public NodeSentence(List<NodeComplexAssign> complexAssign) {
         super("sentence");
@@ -29,8 +30,9 @@ public class NodeSentence extends Node {
         this.nodeWhile = nodeWhile;
     }
 
-    public NodeSentence() {
+    public NodeSentence(NodeWrite nodeWrite) {
         super("sentence");
+        this.nodeWrite = nodeWrite;
     }
 
     @Override
@@ -46,6 +48,9 @@ public class NodeSentence extends Node {
         }
         if (this.nodeWhile != null) {
             return this.nodeWhile.graph(idPadre);
+        }
+        if (this.nodeWrite != null) {
+            return this.nodeWrite.graph(idPadre);
         }
         return "";
     }

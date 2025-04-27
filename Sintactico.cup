@@ -94,7 +94,7 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
 // No terminales
 non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE_SECTION,
              ITEMS, DECLARACION,
-             SALIDA, TEXTO, ASIGN, OTRA_ASIGN;
+             TEXTO, ASIGN, OTRA_ASIGN;
 
 non terminal Node TIPO, ASIGN_DERECHA, FACTOR, COMPARADOR, CONDICIONAL;
 non terminal List<NodeComplexAssign> ASIGNACION_COMPLEJA;
@@ -106,6 +106,7 @@ non terminal NodeComparation COMPARACION;
 non terminal NodeLogical CONDICION;
 non terminal NodeIf SELECCION;
 non terminal NodeWhile ITERACION;
+non terminal NodeWrite SALIDA;
 
 start with START;
 
@@ -265,7 +266,7 @@ SENTENCIA ::= ASIGNACION:n_simpleAssign {:
                 addNewRule(19, "SALIDA -> ",
                     addNonTerminalRuleItem("SALIDA")
                 );
-                RESULT = new NodeSentence();
+                RESULT = new NodeSentence(n_sal);
             :};
 
 ASIGNACION ::= Id:id Asignacion:a EXPRESION:exp {:
@@ -638,6 +639,7 @@ SALIDA ::= Write:w Parentesis_abierto:pa TEXTO Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("TEXTO"),
                     addTerminalRuleItem(pc)
                 );
+                RESULT = new NodeWrite();
             :};
 
 TEXTO ::= Cte_s:s TEXTO {:
