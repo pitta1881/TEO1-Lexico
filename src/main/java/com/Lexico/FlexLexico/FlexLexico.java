@@ -3,6 +3,9 @@ package com.Lexico.FlexLexico;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.File;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
 
 public class FlexLexico {
 
@@ -14,8 +17,12 @@ public class FlexLexico {
 		try {
 			FileWriter archivo = new FileWriter("arbol.dot");
 			PrintWriter pw = new PrintWriter(archivo);
-			pw.println(tokenRulesNodeObject.nodeProgram().graph());
+			String dotTree = tokenRulesNodeObject.nodeProgram().graph();
+			pw.println(dotTree);
 			archivo.close();
+
+			File pngFile = new File("arbol.png");
+			Graphviz.fromString(dotTree).render(Format.PNG).toFile(pngFile);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
