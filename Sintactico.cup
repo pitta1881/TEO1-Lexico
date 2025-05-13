@@ -94,7 +94,7 @@ terminal String While, If, Then, Else, Endif, Not, And, Or,
 // No terminales
 non terminal START, PROGRAM_SECTION_WRITE, PROGRAM_WRITE, DECLARACIONES, DECLARE_SECTION,
              ITEMS, DECLARACION,
-             TEXTO, ASIGN, OTRA_ASIGN;
+             ASIGN, OTRA_ASIGN;
 
 non terminal Node TIPO, ASIGN_DERECHA, FACTOR, COMPARADOR, CONDICIONAL;
 non terminal List<NodeComplexAssign> ASIGNACION_COMPLEJA;
@@ -107,6 +107,7 @@ non terminal NodeLogical CONDICION;
 non terminal NodeIf SELECCION;
 non terminal NodeWhile ITERACION;
 non terminal NodeWrite SALIDA;
+non terminal List<Node> TEXTO;
 
 start with START;
 
@@ -629,7 +630,7 @@ ASIGN_DERECHA ::= Id:id {:
                     RESULT = new Node(s);
                 :};
 
-SALIDA ::= Write:w Parentesis_abierto:pa TEXTO Parentesis_cerrado:pc {:
+SALIDA ::= Write:w Parentesis_abierto:pa TEXTO:txt Parentesis_cerrado:pc {:
                 tokenList.add(new TokenObject("Write", w, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
                 tokenList.add(new TokenObject("Parentesis_cerrado", pc, Optional.empty()));
@@ -639,32 +640,42 @@ SALIDA ::= Write:w Parentesis_abierto:pa TEXTO Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("TEXTO"),
                     addTerminalRuleItem(pc)
                 );
-                RESULT = new NodeWrite();
+                RESULT = new NodeWrite(txt);
             :};
 
-TEXTO ::= Cte_s:s TEXTO {:
+TEXTO ::= Cte_s:s TEXTO:textList {:
                 tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
                 addNewRule(59, "TEXTO -> ",
                     addTerminalRuleItem(s),
                     addNonTerminalRuleItem("TEXTO")
                 );
+                textList.add(new Node(s.replace("\"", "'")));
+                RESULT = textList;
             :}
-            | Id:id TEXTO {:
+            | Id:id TEXTO:textList {:
                 addNewRule(60, "TEXTO -> ",
                     addTerminalRuleItem(id),
                     addNonTerminalRuleItem("TEXTO")
                 );
+                textList.add(new Node(id));
+                RESULT = textList;
             :}
             | Cte_s:s {:
                 tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
                 addNewRule(61, "TEXTO -> ",
                     addTerminalRuleItem(s)
                 );
+                List<Node> textList = new ArrayList<Node>();
+                textList.add(new Node(s.replace("\"", "'")));
+                RESULT = textList;
             :}
             | Id:id {:
                 addNewRule(62, "TEXTO -> ",
                     addTerminalRuleItem(id)
                 );
+                List<Node> textList = new ArrayList<Node>();
+                textList.add(new Node(id));
+                RESULT = textList;
             :};
 
 PROGRAM_SECTION_WRITE ::= Program_section:ps PROGRAM_WRITE Endprogram_section:eps {:

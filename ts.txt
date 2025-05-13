@@ -18,3 +18,4 @@ _10                                     	Cte_i                                  
 _100                                    	Cte_i                                   	                                        	100                                     
 _50                                     	Cte_i                                   	                                        	50                                      
 _"hola"                                 	Cte_s                                   	                                        	"hola"                                  
+_"Hola mas id"                          	Cte_s                                   	                                        	"Hola mas id"                           

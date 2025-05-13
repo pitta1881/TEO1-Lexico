@@ -48,6 +48,7 @@ PROGRAM.SECTION
 
 	WRITE ( "hola" );
 	WRITE ( varId );
+	WRITE ( "Hola mas id" varId );
 
 	//* this is a comment *//
 
