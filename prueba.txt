@@ -1,48 +1,48 @@
 DECLARE.SECTION
-    [a1, b1] := [FLOAT, INT]
-    [p1, p2, p3] := [FLOAT, FLOAT, INT]
+	[a, b, c, d, e, z] := [INT, STRING, FLOAT, INT, STRING, INT]
+	[s1, i1] := [STRING, INT]
+	[f1, i2] := [FLOAT, INT]
+	[f2, f3, i3, s2] := [FLOAT, FLOAT, INT, STRING]
+	[varId] := [STRING]
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
+	e = "test";
+	z = 4;
 	AsigComp([a, b, c, d] : [1, e, 2.5, z]);
 
-	variableE = 37;
-	variableF = 3.7;
-	variableB = 0b00;
-	variableID = idhola;
-	variableExpSum = 37 + 3;
-	variableExpSum = 37 - 3;
-	variableExpMult = 37 * 3;
-	variableExpDiv = 37 / 3;
-	variableExpPar = (37 / 3);
-	variableExp1 = 37 + 3 - 5;
-	variableExp2 = 37 + 3 * 5;
-	variableExp3 = (37 + 3) / 5;
-	variableExp3 = (37 + 3 - 4) / 5;
+	s1 = "pato";
+	s1 = "hola mundo";
+	i1 = 3;
+	f1 = 3.5;
+	f2 = 4.9 + f1;
+	i2 = 50 + 4;
+	i3 = (37 + 3 - i2) / 5;
 
 	IF ( 2 == 3) THEN
-		test2 = 1;
+		i1 = 1;
+		varId = "never here";
 	ENDIF;
 
 	IF (( 2 == 3) AND ( 2 < 3 )) THEN
-		test2 = 1;
+		i1 = 1;
 	ENDIF;
 
 	IF (( 2 == 3+2) AND ( (2+4) /3 < 3)) THEN
-		test2 = 1;
+		f1 = 1.1;
 	ELSE
-		test2 = 0;
+		f2 = 0.3;
 	ENDIF;
 	
-	WHILE ( i <= 10 ) {
-		test = i * 2;
-		i = i + 1;
+	WHILE ( i1 <= 10 ) {
+		i3 = i3 * 2;
+		i1 = i1 + 1;
 	};
 
-	WHILE (( i <= 100 ) OR (m == true)) {
-		i = i + 1;
-		IF (i == 50) THEN
-			m = false;
+	WHILE (( i2 <= 100 ) OR (s1 == "verdadero")) {
+		i2 = i2 + 1;
+		IF (i2 == 50) THEN
+			varId = "maybe here";
 		ENDIF;
 	};
 
@@ -55,5 +55,4 @@ PROGRAM.SECTION
 	//*
 		//* this is a nested comment *//
 	*//
-
 ENDPROGRAM.SECTION

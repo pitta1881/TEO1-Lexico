@@ -30,9 +30,11 @@ action code
 
 	List<String> declareTypesIds = new ArrayList<>();
 	List<Node> declareTypesType = new ArrayList<>();
+    List<String> declareVarTypes = new ArrayList<>();
 
-    ArrayList<TokenObject> globalDeclareVariables = new ArrayList<>();
-	
+    Map<String, TokenObject> globalDeclareVariables = new HashMap<>();
+    String currentType = null;
+
     public void addNewRule(int id, String start, RuleItem... rules) {
         ArrayList<RuleItem> rulesTemp = new ArrayList();
         rulesTemp.addAll(Arrays.asList(rules));
@@ -64,7 +66,7 @@ action code
 	    if (typesStack.size() == tokenIds.size()) {
 	        tokenIds.forEach(tokenId -> tokenId.setType(Optional.of(getType())));
 	    }
-        globalDeclareVariables.addAll(tokenIds);
+        checkDuplicatedDeclaredVariables(tokenIds);
 	}
 
     public List<NodeComplexAssign> fixComplexAssign(){
@@ -74,25 +76,69 @@ action code
         for (int i = 0; i < sizeLength; i++) {
             fixedDeclarations.add(new NodeComplexAssign(new Node(declareTypesIds.get(i)), declareTypesType.get(i)));
         }
+        for (int i = 0; i < sizeLength; i++) {
+            String varType = declareVarTypes.get(i);
+            String id = declareTypesIds.get(i);
+            if (globalDeclareVariables.containsKey(id) && globalDeclareVariables.get(id).type().isPresent()) {
+                String tokenType = globalDeclareVariables.get(id).type().get();
+                if (varType.equals("ID")) {
+                    TokenObject token = globalDeclareVariables.get(id);
+                    if (token != null && token.type().isPresent()) {
+                        varType = token.type().get();
+                    }
+                }                
+                if (!tokenType.equals(varType)) {
+                    throw new RuntimeException("Error : Tipo de variable no coincide. Se esperaba '" + tokenType + "' pero se encontró '" + varType + "'.");
+                }
+            }
+        }
         declareTypesIds.clear();
         declareTypesType.clear();
+        declareVarTypes.clear();
         return fixedDeclarations;
     }
 
-    public void checkDuplicatedDeclaredVariables() {
-        Set<String> uniqueIds = new HashSet<>();
-        for (TokenObject token : globalDeclareVariables) {
-            if (!uniqueIds.add(token.value())) {
-                throw new RuntimeException("Error: Variable " + token.value() + " ya declarada.");
+    public void checkDuplicatedDeclaredVariables(List<TokenObject> tokenIds) {
+        for (TokenObject token : tokenIds) {
+            if (globalDeclareVariables.containsKey(token.value())) {
+                throw new RuntimeException("Error: Variable '" + token.value() + "' ya declarada.");
             }
+            globalDeclareVariables.put(token.value(), token);
         }
     }
 
     public void checkVariableIsDeclared(String id) {
-        if (globalDeclareVariables.stream().anyMatch(token -> token.value().equals(id))) {
-            return;
+        if (!globalDeclareVariables.containsKey(id)) {
+            throw new RuntimeException("Error: Variable '" + id + "' no declarada.");
         }
-        throw new RuntimeException("Error: Variable '" + id + "' no declarada.");
+    }
+
+    public void setCurrentType(String type, Object value) {
+        if (type.equals("ID")) {
+            TokenObject token = globalDeclareVariables.get(value);
+            if (token != null && token.type().isPresent()) {
+                type = token.type().get();
+            }
+        }
+        if (currentType == null) {
+            currentType = type;
+        } else if (!currentType.equals(type)) {
+            throw new RuntimeException("Error : Tipo de variable no coincide. Se esperaba '" + currentType + "' pero se encontró '" + type + "'. Valor: " + value.toString());
+        }
+    }
+
+    public void clearCurrentType() {
+        currentType = null;
+    }
+
+    public void checkCurrentType(String id) {
+        TokenObject token = globalDeclareVariables.get(id);
+        if (token != null && token.type().isPresent()) {
+            String type = token.type().get();
+            if (!type.equals(currentType)) {
+                throw new RuntimeException("Error Variable: " + id + ": Tipo de variable no coincide. Se esperaba '" + type + "' pero se encontró '" + currentType + "'.");
+            }
+        }
     }
 
 :}
@@ -152,7 +198,6 @@ DECLARE_SECTION ::= Declare_section:ds DECLARACIONES Enddeclare_section:eds {:
                         addNonTerminalRuleItem("DECLARACIONES"),
                         addTerminalRuleItem(eds)
                     );
-                    checkDuplicatedDeclaredVariables();
                 :};
 
 DECLARACIONES ::= DECLARACIONES DECLARACION {:
@@ -296,6 +341,8 @@ ASIGNACION ::= Id:id Asignacion:a EXPRESION:exp {:
                     addNonTerminalRuleItem("EXPRESION")
                 );
                 checkVariableIsDeclared(id);
+                checkCurrentType(id);
+                clearCurrentType();
                 RESULT = new NodeSimpleAssign(new Node(id), exp);
             :};
 
@@ -364,6 +411,7 @@ FACTOR ::=  Id:id {:
                     addTerminalRuleItem(id)
                 );
                 checkVariableIsDeclared(id);
+                setCurrentType("ID", id);
                 RESULT = new Node(id);
             :}
             | Cte_f:f {:
@@ -371,6 +419,7 @@ FACTOR ::=  Id:id {:
                 addNewRule(29, "FACTOR -> ",
                     addTerminalRuleItem(f)
                 );
+                setCurrentType("FLOAT", f);
                 RESULT = new Node(f);
             :}
             | Cte_i:e {:
@@ -378,6 +427,7 @@ FACTOR ::=  Id:id {:
                 addNewRule(30, "FACTOR -> ",
                     addTerminalRuleItem(e)
                 );
+                setCurrentType("INT", e);
                 RESULT = new Node(e);
             :}
             | Cte_b:b {:
@@ -385,7 +435,16 @@ FACTOR ::=  Id:id {:
                 addNewRule(31, "FACTOR -> ",
                     addTerminalRuleItem(b)
                 );
+                setCurrentType("BOOLEAN", b);
                 RESULT = new Node(b);
+            :}
+            | Cte_s:s {:
+                tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
+                addNewRule(32, "FACTOR -> ",
+                    addTerminalRuleItem(s)
+                );
+                setCurrentType("STRING", s);
+                RESULT = new Node(s.replace("\"", "'"));
             :};
 
 ITERACION ::= While:w Parentesis_abierto:pa CONDICION:cond Parentesis_cerrado:pc Llave_abierta:la PROGRAM:blockBody Llave_cerrada:lc {:
@@ -465,6 +524,7 @@ COMPARACION ::= EXPRESION:exp COMPARADOR:comp EXPRESION:exp2 {:
                     addNonTerminalRuleItem("COMPARADOR"),
                     addNonTerminalRuleItem("EXPRESION")
                 );
+                clearCurrentType();
                 RESULT = new NodeComparation(comp, exp, exp2);
             :};
 
@@ -622,6 +682,7 @@ ASIGN_DERECHA ::= Id:id {:
                           addTerminalRuleItem(id)
                       );
                       checkVariableIsDeclared(id);
+                      declareVarTypes.add("ID");
                       RESULT = new Node(id);
                   :}
                   | Cte_f:f {:
@@ -629,6 +690,7 @@ ASIGN_DERECHA ::= Id:id {:
                       addNewRule(54, "FACTOR -> ",
                           addTerminalRuleItem(f)
                       );
+                        declareVarTypes.add("FLOAT");
                       RESULT = new Node(f);
                   :}
                   | Cte_i:e {:
@@ -636,6 +698,7 @@ ASIGN_DERECHA ::= Id:id {:
                       addNewRule(55, "FACTOR -> ",
                           addTerminalRuleItem(e)
                       );
+                        declareVarTypes.add("INT");
                         RESULT = new Node(e);
                   :}
                   | Cte_b:b {:
@@ -643,6 +706,7 @@ ASIGN_DERECHA ::= Id:id {:
                       addNewRule(56, "FACTOR -> ",
                           addTerminalRuleItem(b)
                       );
+                        declareVarTypes.add("BOOLEAN");
                         RESULT = new Node(b);
                   :}
                   | Cte_s:s {:
@@ -650,6 +714,7 @@ ASIGN_DERECHA ::= Id:id {:
                     addNewRule(57, "FACTOR -> ",
                         addTerminalRuleItem(s)
                     );
+                    declareVarTypes.add("STRING");
                     RESULT = new Node(s);
                 :};
 
