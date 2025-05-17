@@ -22,7 +22,7 @@ FlexLexico is a Java-based lexical analyzer project. It reads and processes a fi
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/VNardoni/TEO1.git
+   git clone https://github.com/pitta1881/TEO1-Lexico.git
    cd FlexLexico
    ```
 
@@ -46,7 +46,7 @@ The resulting .jar file will be located in the target directory
 To run the .jar file, use the following command:
 
 ```sh
-java -jar .\FlexLexico-2.0.jar
+java -jar .\FlexLexico.jar
 ```
 
 ## Usage
