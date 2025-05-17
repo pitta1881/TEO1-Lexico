@@ -88,6 +88,13 @@ action code
         }
     }
 
+    public void checkVariableIsDeclared(String id) {
+        if (globalDeclareVariables.stream().anyMatch(token -> token.value().equals(id))) {
+            return;
+        }
+        throw new RuntimeException("Error: Variable '" + id + "' no declarada.");
+    }
+
 :}
 
 // Terminales
@@ -288,6 +295,7 @@ ASIGNACION ::= Id:id Asignacion:a EXPRESION:exp {:
                     addTerminalRuleItem(a),
                     addNonTerminalRuleItem("EXPRESION")
                 );
+                checkVariableIsDeclared(id);
                 RESULT = new NodeSimpleAssign(new Node(id), exp);
             :};
 
@@ -355,6 +363,7 @@ FACTOR ::=  Id:id {:
                 addNewRule(28, "FACTOR -> ",
                     addTerminalRuleItem(id)
                 );
+                checkVariableIsDeclared(id);
                 RESULT = new Node(id);
             :}
             | Cte_f:f {:
@@ -578,6 +587,7 @@ ASIGN ::= Corchete_abierto:ca Id:id OTRA_ASIGN ASIGN_DERECHA:n_asigDer Corchete_
                     addNonTerminalRuleItem("ASIGN_DERECHA"),
                     addTerminalRuleItem(cc)
                 );
+                checkVariableIsDeclared(id);
                 declareTypesIds.add(id);
                 declareTypesType.add(n_asigDer);
             :};
@@ -592,6 +602,7 @@ OTRA_ASIGN ::= Coma:c Id:id OTRA_ASIGN ASIGN_DERECHA:n_asigDer Coma:cc {:
                     addNonTerminalRuleItem("ASIGN_DERECHA"),
                     addTerminalRuleItem(cc)
                 );
+                checkVariableIsDeclared(id);
                 declareTypesIds.add(id);
                 declareTypesType.add(n_asigDer);
             :}
@@ -610,6 +621,7 @@ ASIGN_DERECHA ::= Id:id {:
                       addNewRule(53, "FACTOR -> ",
                           addTerminalRuleItem(id)
                       );
+                      checkVariableIsDeclared(id);
                       RESULT = new Node(id);
                   :}
                   | Cte_f:f {:
@@ -669,6 +681,7 @@ TEXTO ::= Cte_s:s TEXTO:textList {:
                     addNonTerminalRuleItem("TEXTO")
                 );
                 textList.add(new Node(id));
+                checkVariableIsDeclared(id);
                 RESULT = textList;
             :}
             | Cte_s:s {:
@@ -686,6 +699,7 @@ TEXTO ::= Cte_s:s TEXTO:textList {:
                 );
                 List<Node> textList = new ArrayList<Node>();
                 textList.add(new Node(id));
+                checkVariableIsDeclared(id);
                 RESULT = textList;
             :};
 
