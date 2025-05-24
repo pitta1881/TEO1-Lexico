@@ -18,4 +18,10 @@ public class NodeSimpleAssign extends Node {
                 left.graph(myId) +
                 right.graph(myId);
     }
+
+    @Override
+    protected String assembly() {
+        return right.assembly() +
+                "fstp " + left.getDescriptionNode() + "\n";
+    }
 }

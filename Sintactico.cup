@@ -378,7 +378,7 @@ TERMINO ::= TERMINO:term Multiplicacion:m FACTOR:fact {:
                     addTerminalRuleItem(m),
                     addNonTerminalRuleItem("FACTOR")
                 );
-                RESULT = new NodeArithmetic("*", term, fact);
+                RESULT = new NodeArithmetic("*", term, new NodeArithmetic(fact));
             :}
             | TERMINO:term Division:d FACTOR:fact {:
                 tokenList.add(new TokenObject("Division", d, Optional.empty()));
@@ -387,7 +387,7 @@ TERMINO ::= TERMINO:term Multiplicacion:m FACTOR:fact {:
                     addTerminalRuleItem(d),
                     addNonTerminalRuleItem("FACTOR")
                 );
-                RESULT = new NodeArithmetic("/", term, fact);
+                RESULT = new NodeArithmetic("/", term, new NodeArithmetic(fact));
             :}
             | Parentesis_abierto:pa EXPRESION:exp Parentesis_cerrado:pc {:
                 tokenList.add(new TokenObject("Parentesis_abierto", pa, Optional.empty()));
@@ -403,7 +403,7 @@ TERMINO ::= TERMINO:term Multiplicacion:m FACTOR:fact {:
                 addNewRule(26, "TERMINO -> ",
                     addNonTerminalRuleItem("FACTOR")
                 );
-                RESULT = new NodeArithmetic(fact);
+                RESULT = new NodeArithmetic(new NodeArithmetic(fact));
           :};
 
 FACTOR ::=  Id:id {:
@@ -412,7 +412,7 @@ FACTOR ::=  Id:id {:
                 );
                 checkVariableIsDeclared(id);
                 setCurrentType("ID", id);
-                RESULT = new Node(id);
+                RESULT = new NodeArithmetic(new Node(id));
             :}
             | Cte_f:f {:
                 tokenList.add(new TokenObject("Cte_f", f, Optional.empty()));
@@ -420,7 +420,7 @@ FACTOR ::=  Id:id {:
                     addTerminalRuleItem(f)
                 );
                 setCurrentType("FLOAT", f);
-                RESULT = new Node(f);
+                RESULT = new NodeArithmetic(new Node(f));
             :}
             | Cte_i:e {:
                 tokenList.add(new TokenObject("Cte_i", e, Optional.empty()));
@@ -428,7 +428,7 @@ FACTOR ::=  Id:id {:
                     addTerminalRuleItem(e)
                 );
                 setCurrentType("INT", e);
-                RESULT = new Node(e);
+                RESULT = new NodeArithmetic(new Node(e));
             :}
             | Cte_b:b {:
                 tokenList.add(new TokenObject("Cte_b", b, Optional.empty()));
@@ -436,7 +436,7 @@ FACTOR ::=  Id:id {:
                     addTerminalRuleItem(b)
                 );
                 setCurrentType("BOOLEAN", b);
-                RESULT = new Node(b);
+                RESULT = new NodeArithmetic(new Node(b));
             :}
             | Cte_s:s {:
                 tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
@@ -444,7 +444,7 @@ FACTOR ::=  Id:id {:
                     addTerminalRuleItem(s)
                 );
                 setCurrentType("STRING", s);
-                RESULT = new Node(s.replace("\"", "'"));
+                RESULT = new NodeArithmetic(new Node(s.replace("\"", "'")));
             :};
 
 ITERACION ::= While:w Parentesis_abierto:pa CONDICION:cond Parentesis_cerrado:pc Llave_abierta:la PROGRAM:blockBody Llave_cerrada:lc {:

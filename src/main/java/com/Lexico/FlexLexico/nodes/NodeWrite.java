@@ -21,4 +21,10 @@ public class NodeWrite extends Node {
                 .reduce("", String::concat);
     }
 
+    @Override
+    public String assembly() {
+        return  "displayFloat " + listNodeText.get(0).getDescriptionNode() + ", 2\n" +
+                "newLine 1\n";
+    }
+
 }

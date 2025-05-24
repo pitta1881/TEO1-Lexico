@@ -1,0 +1,25 @@
+DECLARE.SECTION
+	[varInt, varFloat] := [INT, FLOAT]
+	[varInt2, varFloat2] := [INT, FLOAT]
+	[varComp] := [FLOAT]
+	
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+	varInt = 2 * 3;
+	varFloat = 3.4 + 1.6;
+
+	WRITE ( varInt );
+	WRITE ( varFloat );
+
+	varInt2 = 7 / 3;
+	varFloat2 = 6.5 - 2.1;
+
+	WRITE ( varInt2 );
+	WRITE ( varFloat2 );
+
+	varComp = (37.0 + 3.0 - varFloat2) / 5.0;
+
+	WRITE ( varComp );
+
+ENDPROGRAM.SECTION

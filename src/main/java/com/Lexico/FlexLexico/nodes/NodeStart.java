@@ -28,5 +28,12 @@ public class NodeStart extends Node {
 
         return result.toString();
     }
+
+    @Override
+    public String assembly() {
+        StringBuilder result = new StringBuilder();
+        result.append(this.sentences.stream().map(NodeSentence::assembly).reduce("", String::concat));
+        return result.toString();
+    }
 }
 

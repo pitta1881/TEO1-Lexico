@@ -217,19 +217,19 @@ public class VistaGrafica {
 
 	private void saveTsFile(ArrayList<TokenObject> tokenList) {
 		ArrayList<TokenObject> uniqueTokens = removeDuplicatesByName(tokenList);
-		int columnWidth = 40; // Define a fixed width for each column
+		int columnWidth = 10; // Define a fixed width for each column
+		final String FORMAT_STRING = "%-" + columnWidth + "s\t%-" + columnWidth + "s\t%s\n";
 		File file = new File("ts.txt");
 		List<String> constValidTokenNames = Arrays.asList("Cte_s", "Cte_f", "Cte_i", "Cte_b");
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\n", "NOMBRE", "TOKEN", "TIPO", "VALOR"));
 		uniqueTokens.stream()
 				.filter(token -> token.name().equals("ID"))
-				.forEach(token -> sb.append(String.format("%-" + columnWidth + "s\t%-" + columnWidth +  "s\t%-" + columnWidth + "s\t\n", token.value(), token.name(), token.type().isPresent() ? token.type().get() : "")));
+				.forEach(token -> sb.append(String.format(FORMAT_STRING, token.value(), token.type().isPresent() && token.type().get().equals("STRING") ? "DB" : "DD", "?")));
 		uniqueTokens.stream()
 				.filter(token -> constValidTokenNames.contains(token.name()))
 				.filter(this::validateTokenValue)
 				.forEach(token -> {
-						sb.append(String.format("%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\n", "_" + token.value(), token.name(), "" , token.value()));
+						sb.append(String.format(FORMAT_STRING, "_" + token.value().replace('.', '_'), token.type().isPresent() && token.type().get().equals("STRING") ? "DB" : "DD", token.value()));
 				});
 		try (FileWriter writer = new FileWriter(file)) {
 			writer.write(sb.toString());

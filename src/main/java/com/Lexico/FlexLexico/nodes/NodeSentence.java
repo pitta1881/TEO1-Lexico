@@ -54,4 +54,24 @@ public class NodeSentence extends Node {
         }
         return "";
     }
+
+    @Override
+    public String assembly() {
+        if (this.simpleAssign != null) {
+            return this.simpleAssign.assembly() + "ffree\n";
+        }
+        if (this.complexAssign != null) {
+            return this.complexAssign.stream().map(NodeComplexAssign::assembly).reduce("", String::concat);
+        }
+        if (this.nodeIf != null) {
+            return this.nodeIf.assembly();
+        }
+        if (this.nodeWhile != null) {
+            return this.nodeWhile.assembly();
+        }
+        if (this.nodeWrite != null) {
+            return this.nodeWrite.assembly();
+        }
+        return "";
+    }
 }

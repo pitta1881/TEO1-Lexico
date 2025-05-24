@@ -1,38 +1,15 @@
-NOMBRE                                  	TOKEN                                   	TIPO                                    	VALOR                                   
-z                                       	ID                                      	INT                                     	
-e                                       	ID                                      	STRING                                  	
-d                                       	ID                                      	INT                                     	
-c                                       	ID                                      	FLOAT                                   	
-b                                       	ID                                      	STRING                                  	
-a                                       	ID                                      	INT                                     	
-i1                                      	ID                                      	INT                                     	
-s1                                      	ID                                      	STRING                                  	
-i2                                      	ID                                      	INT                                     	
-f1                                      	ID                                      	FLOAT                                   	
-s2                                      	ID                                      	STRING                                  	
-i3                                      	ID                                      	INT                                     	
-f3                                      	ID                                      	FLOAT                                   	
-f2                                      	ID                                      	FLOAT                                   	
-varId                                   	ID                                      	STRING                                  	
-_"test"                                 	Cte_s                                   	                                        	"test"                                  
-_4                                      	Cte_i                                   	                                        	4                                       
-_1                                      	Cte_i                                   	                                        	1                                       
-_2.5                                    	Cte_f                                   	                                        	2.5                                     
-_"pato"                                 	Cte_s                                   	                                        	"pato"                                  
-_"hola mundo"                           	Cte_s                                   	                                        	"hola mundo"                            
-_3                                      	Cte_i                                   	                                        	3                                       
-_3.5                                    	Cte_f                                   	                                        	3.5                                     
-_4.9                                    	Cte_f                                   	                                        	4.9                                     
-_50                                     	Cte_i                                   	                                        	50                                      
-_37                                     	Cte_i                                   	                                        	37                                      
-_5                                      	Cte_i                                   	                                        	5                                       
-_2                                      	Cte_i                                   	                                        	2                                       
-_"never here"                           	Cte_s                                   	                                        	"never here"                            
-_1.1                                    	Cte_f                                   	                                        	1.1                                     
-_0.3                                    	Cte_f                                   	                                        	0.3                                     
-_10                                     	Cte_i                                   	                                        	10                                      
-_100                                    	Cte_i                                   	                                        	100                                     
-_"verdadero"                            	Cte_s                                   	                                        	"verdadero"                             
-_"maybe here"                           	Cte_s                                   	                                        	"maybe here"                            
-_"hola"                                 	Cte_s                                   	                                        	"hola"                                  
-_"Hola mas id"                          	Cte_s                                   	                                        	"Hola mas id"                           
+varFloat  	DD        	?
+varInt    	DD        	?
+varFloat2 	DD        	?
+varInt2   	DD        	?
+varComp   	DD        	?
+_2        	DD        	2
+_3        	DD        	3
+_3_4      	DD        	3.4
+_1_6      	DD        	1.6
+_7        	DD        	7
+_6_5      	DD        	6.5
+_2_1      	DD        	2.1
+_37_0     	DD        	37.0
+_3_0      	DD        	3.0
+_5_0      	DD        	5.0

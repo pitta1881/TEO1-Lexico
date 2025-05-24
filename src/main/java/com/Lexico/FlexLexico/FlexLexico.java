@@ -18,6 +18,8 @@ public class FlexLexico {
 			FileWriter archivo = new FileWriter("arbol.dot");
 			PrintWriter pw = new PrintWriter(archivo);
 			String dotTree = tokenRulesNodeObject.nodeProgram().graph();
+			String assemmlyString = tokenRulesNodeObject.nodeProgram().assembly();
+			System.out.println(assemmlyString);
 			pw.println(dotTree);
 			archivo.close();
 
