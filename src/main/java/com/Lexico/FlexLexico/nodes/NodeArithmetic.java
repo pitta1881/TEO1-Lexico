@@ -37,10 +37,14 @@ public class NodeArithmetic extends Node {
     @Override
     protected String assembly() {
         if (factor != null) {
-            Boolean isFloat = factor.getDescriptionNode().contains(".") || factor.getDescriptionNode().matches(".*[a-zA-Z].*");
-            String instruction = Boolean.TRUE.equals(isFloat) ? "fld _" : "fild _";
-            instruction = factor.getDescriptionNode().matches(".*[a-zA-Z].*") ? instruction.replace("_", "") : instruction;
-            return instruction + factor.getDescriptionNode().replace('.', '_') + "\n";
+            String value = factor.getDescriptionNode().replace('.', '_');
+            String instruction;
+            if (Boolean.TRUE.equals(isID(factor))) {
+                instruction = Boolean.TRUE.equals(isFloat(factor)) ? "fld " : "fild ";
+            } else {
+                instruction = Boolean.TRUE.equals(isFloat(factor)) ? "fld _" : "fild _";
+            }
+            return instruction + value + "\n";
         }
         String operatorInstruction = switch (operator) {
             case "+" -> "fadd";
@@ -52,6 +56,14 @@ public class NodeArithmetic extends Node {
         return right.assembly() +
                 left.assembly() +
                 operatorInstruction + "\n";
+    }
+
+    private Boolean isFloat(Node node) {
+        return node != null && (node.getDescriptionNode().contains(".") || node.getDescriptionNode().matches(".*[a-zA-Z].*"));
+    }
+
+    private Boolean isID(Node node) {
+        return node != null && node.getDescriptionNode().matches(".*[a-zA-Z].*");
     }
 
 }

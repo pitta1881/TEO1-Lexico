@@ -1,8 +1,8 @@
 DECLARE.SECTION
 	[varInt, varFloat] := [INT, FLOAT]
 	[varInt2, varFloat2] := [INT, FLOAT]
-	[varComp] := [FLOAT]
-	
+	[varCompuest] := [FLOAT]
+	[varIntComp, varFloatComp] := [INT, FLOAT]	
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
@@ -18,8 +18,13 @@ PROGRAM.SECTION
 	WRITE ( varInt2 );
 	WRITE ( varFloat2 );
 
-	varComp = (37.0 + 3.0 - varFloat2) / 5.0;
+	varCompuest = (37.0 + 3.0 - varFloat2) / 5.0;
 
-	WRITE ( varComp );
+	WRITE ( varCompuest );
+
+	AsigComp([varIntComp, varFloatComp] : [varInt, 2.5]);
+	
+	WRITE ( varIntComp );
+	WRITE ( varFloatComp );
 
 ENDPROGRAM.SECTION

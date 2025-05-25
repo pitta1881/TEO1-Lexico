@@ -61,7 +61,9 @@ public class NodeSentence extends Node {
             return this.simpleAssign.assembly() + "ffree\n";
         }
         if (this.complexAssign != null) {
-            return this.complexAssign.stream().map(NodeComplexAssign::assembly).reduce("", String::concat);
+            return this.complexAssign.stream()
+                .map(assign -> assign.assembly() + "ffree\n")
+                .reduce("", String::concat);
         }
         if (this.nodeIf != null) {
             return this.nodeIf.assembly();

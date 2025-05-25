@@ -12,7 +12,9 @@ varFloat    DD          ?
 varInt      DD          ?
 varFloat2   DD          ?
 varInt2     DD          ?
-varComp     DD          ?
+varCompuest DD          ?
+varFloatComp    DD          ?
+varIntComp  DD          ?
 _2          DD          2
 _3          DD          3
 _3_4        DD          3.4
@@ -23,6 +25,7 @@ _2_1        DD          2.1
 _37_0       DD          37.0
 _3_0        DD          3.0
 _5_0        DD          5.0
+_2_5        DD          2.5
 
 
 .CODE     ;comienzo de la zona de codigo
@@ -67,9 +70,19 @@ fld varFloat2
 fsub
 fld _5_0
 fdiv
-fstp varComp
+fstp varCompuest
 ffree
-displayFloat varComp, 2
+displayFloat varCompuest, 2
+newLine 1
+fld varInt
+fstp varIntComp
+ffree
+fld _2_5
+fstp varFloatComp
+ffree
+displayFloat varIntComp, 2
+newLine 1
+displayFloat varFloatComp, 2
 newLine 1
 
 ;-------END REAL PROGRAM-----------

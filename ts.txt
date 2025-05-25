@@ -2,7 +2,9 @@ varFloat  	DD        	?
 varInt    	DD        	?
 varFloat2 	DD        	?
 varInt2   	DD        	?
-varComp   	DD        	?
+varCompuest	DD        	?
+varFloatComp	DD        	?
+varIntComp	DD        	?
 _2        	DD        	2
 _3        	DD        	3
 _3_4      	DD        	3.4
@@ -13,3 +15,4 @@ _2_1      	DD        	2.1
 _37_0     	DD        	37.0
 _3_0      	DD        	3.0
 _5_0      	DD        	5.0
+_2_5      	DD        	2.5
