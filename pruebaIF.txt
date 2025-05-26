@@ -1,0 +1,51 @@
+DECLARE.SECTION
+	[varInt, varFloat, varFloatElse] := [INT, FLOAT, FLOAT]
+	[varIntMul, varFloatMul] := [INT, FLOAT]
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+	varInt = 2 * 3;
+	varFloatElse = 25.5;
+	
+	IF ( varInt != 10) THEN
+		varFloat = 5.23;
+		WRITE ( varFloat );
+	ENDIF;
+
+	IF ( varInt <= 10) THEN
+		WRITE ( 1 );
+	ENDIF;
+
+	IF ( varFloatElse < 2.0) THEN
+		WRITE ( 8 );
+	ELSE
+		WRITE ( 9 );
+	ENDIF;
+
+	varIntMul = 5 + ( 2 * 3 );
+
+	IF (( varIntMul == 3) AND ( 2 < 3 )) THEN
+		WRITE ( 1001 );
+	ELSE
+		WRITE ( 1002 );
+	ENDIF;
+
+	varFloatMul = 5.5;
+
+	IF (( varFloatMul == 5.5) AND ( 2 < 30 )) THEN
+		WRITE ( 1003 );
+	ENDIF;
+
+	varFloatMul = 10.8;
+
+	IF (( 4.1 == 2.1) OR ( varFloatMul >= 30.1 )) THEN
+		WRITE ( 1004 );
+	ELSE
+		WRITE ( 1005 );
+	ENDIF;
+
+	IF (( 4.1 != varFloatMul ) OR ( 2 > 3 )) THEN
+		WRITE ( 1006 );
+	ENDIF;
+
+ENDPROGRAM.SECTION

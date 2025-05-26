@@ -66,7 +66,7 @@ public class NodeSentence extends Node {
                 .reduce("", String::concat);
         }
         if (this.nodeIf != null) {
-            return this.nodeIf.assembly();
+            return this.nodeIf.assembly() + "ffree\n";
         }
         if (this.nodeWhile != null) {
             return this.nodeWhile.assembly();

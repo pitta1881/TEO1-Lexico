@@ -29,4 +29,24 @@ public class NodeIf extends Node {
             (this.blockElse != null ? this.blockElse.stream().map(sentence -> sentence.graph(this.nodeElse.getIdNode())).reduce("", String::concat) : "");
     }
 
+    @Override
+    public String assembly() {
+        String etiquetaThen = "ThenIf_" + Integer.toHexString(this.hashCode());
+        String etiquetaElse = this.blockElse != null ? "ElseIf_" + Integer.toHexString(this.hashCode()) : null;
+        String etiquetaEnd = "EndIf_" + Integer.toHexString(this.hashCode());
+
+        String comparatorAssembled = this.logical.assemblyCustom(etiquetaThen, etiquetaElse, etiquetaEnd);
+        String thenBlockAssembled = this.blockThen.stream().map(sentence -> sentence.assembly()).reduce("", String::concat);
+        String elseBlockAssembled = this.blockElse != null ? this.blockElse.stream().map(sentence -> sentence.assembly()).reduce("", String::concat) : "";
+
+        return comparatorAssembled +
+                etiquetaThen + ": " + "\n" +
+                thenBlockAssembled +
+                "jmp " + etiquetaEnd + "\n" +
+                (this.blockElse != null ? 
+                    etiquetaElse + ": " + "\n" +
+                    elseBlockAssembled : "") +
+                etiquetaEnd + ": " + "\n";
+    }
+
 }

@@ -19,7 +19,9 @@ public class FlexLexico {
 			PrintWriter pw = new PrintWriter(archivo);
 			String dotTree = tokenRulesNodeObject.nodeProgram().graph();
 			String assemmlyString = tokenRulesNodeObject.nodeProgram().assembly();
-			System.out.println(assemmlyString);
+			try (FileWriter asmFile = new FileWriter("asmBody.txt")) {
+				asmFile.write(assemmlyString);
+			}
 			pw.println(dotTree);
 			archivo.close();
 

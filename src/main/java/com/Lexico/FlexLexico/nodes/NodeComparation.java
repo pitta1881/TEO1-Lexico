@@ -18,4 +18,10 @@ public class NodeComparation extends Node {
                 left.graph(myId) +
                 right.graph(myId);
     }
+
+    @Override
+    public String assembly() {
+        
+        return "";
+    }
 }

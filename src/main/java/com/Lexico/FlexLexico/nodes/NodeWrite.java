@@ -23,8 +23,16 @@ public class NodeWrite extends Node {
 
     @Override
     public String assembly() {
-        return  "displayFloat " + listNodeText.get(0).getDescriptionNode() + ", 2\n" +
-                "newLine 1\n";
+        String displayString = listNodeText.get(0).getTypeNode().equals("FLOAT") ? 
+                    "displayFloat _" + listNodeText.get(0).getDescriptionNode().replace('.', '_') + ", 2\n":
+                    "displayInteger _" + listNodeText.get(0).getDescriptionNode() + "\n";
+        displayString = Boolean.TRUE.equals(isID(listNodeText.get(0))) ? displayString.replace("_", "") : displayString;
+        return displayString +
+            "newLine 1\n";
+    }
+
+    private Boolean isID(Node node) {
+        return node != null && node.getDescriptionNode().matches(".*[a-zA-Z].*");
     }
 
 }

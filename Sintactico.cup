@@ -141,6 +141,14 @@ action code
         }
     }
 
+    public String getCurrentType(String id) {
+        TokenObject token = globalDeclareVariables.get(id);
+        if (token != null && token.type().isPresent()) {
+            return token.type().get();
+        }
+        return null;
+    }
+
 :}
 
 // Terminales
@@ -763,8 +771,26 @@ TEXTO ::= Cte_s:s TEXTO:textList {:
                     addTerminalRuleItem(id)
                 );
                 List<Node> textList = new ArrayList<Node>();
-                textList.add(new Node(id));
                 checkVariableIsDeclared(id);
+                textList.add(new Node(id, getCurrentType(id)));
+                RESULT = textList;
+            :}
+            | Cte_f:f {:
+                tokenList.add(new TokenObject("Cte_f", f, Optional.empty()));
+                addNewRule(63, "TEXTO -> ",
+                    addTerminalRuleItem(f)
+                );
+                List<Node> textList = new ArrayList<Node>();
+                textList.add(new Node(f, "FLOAT"));
+                RESULT = textList;
+            :}
+            | Cte_i:e {:
+                tokenList.add(new TokenObject("Cte_i", e, Optional.empty()));
+                addNewRule(64, "TEXTO -> ",
+                    addTerminalRuleItem(e)
+                );
+                List<Node> textList = new ArrayList<Node>();
+                textList.add(new Node(e, "INT"));
                 RESULT = textList;
             :};
 
