@@ -8,33 +8,16 @@ include number.asm
 .DATA
 ;variables de la tabla de simbolos
 mensaje DB 'Hola, mundo!$'   ; Cadena terminada en '$' para DOS
-varFloatElse    DD          ?
+varFloatMult    DD          ?
 varFloat    DD          ?
 varInt      DD          ?
-varFloatMul DD          ?
-varIntMul   DD          ?
-_2          DD          2
-_3          DD          3
 _25_5       DD          25.5
-_10         DD          10
-_5_23       DD          5.23
+_0_0        DD          0.0
+_10_0       DD          10.0
+_50_0       DD          50.0
 _1          DD          1
-_2_0        DD          2.0
-_8          DD          8
-_9          DD          9
-_5          DD          5
-_1001       DD          1001
-_1002       DD          1002
-_5_5        DD          5.5
-_30         DD          30
-_1003       DD          1003
-_10_8       DD          10.8
-_4_1        DD          4.1
-_2_1        DD          2.1
-_30_1       DD          30.1
-_1004       DD          1004
-_1005       DD          1005
-_1006       DD          1006
+_0          DD          0
+
 
 
 .CODE     ;comienzo de la zona de codigo
@@ -44,157 +27,72 @@ _start:
     MOV ES,EAX
 ;-------START REAL PROGRAM-----------
 
-fild _2
-fild _3
-fmul
-fstp varInt
-ffree
 fld _25_5
-fstp varFloatElse
+fstp varFloat
 ffree
-fld varInt
-fild _10
+While_2f017a7c: 
+fld varFloat
+fld _0_0
 fxch 
 fcom
 fstsw ax
 sahf
-je EndIf_58b79deb
-ThenIf_58b79deb: 
-fld _5_23
+jbe EndWhile_2f017a7c
+BlockBodyWhile_2f017a7c: 
+fld varFloat
+fld _10_0
+fsub
 fstp varFloat
 ffree
 displayFloat varFloat, 2
 newLine 1
-jmp EndIf_58b79deb
-EndIf_58b79deb: 
+jmp While_2f017a7c
+EndWhile_2f017a7c: 
 ffree
-fld varInt
-fild _10
+fld _10_0
+fstp varFloatMult
+ffree
+While_7b76102d: 
+fld varFloatMult
+fld _10_0
 fxch 
 fcom
 fstsw ax
 sahf
-ja EndIf_4238ba33
-ThenIf_4238ba33: 
+jb EndWhile_7b76102d
+fld varFloatMult
+fld _50_0
+fxch 
+fcom
+fstsw ax
+sahf
+ja EndWhile_7b76102d
+BlockBodyWhile_7b76102d: 
+fld varFloatMult
+fld _10_0
+fadd
+fstp varFloatMult
+ffree
+fld varFloatMult
+fld _50_0
+fxch 
+fcom
+fstsw ax
+sahf
+jne ElseIf_a472a6a
+ThenIf_a472a6a: 
 displayInteger _1
 newLine 1
-jmp EndIf_4238ba33
-EndIf_4238ba33: 
-ffree
-fld varFloatElse
-fld _2_0
-fxch 
-fcom
-fstsw ax
-sahf
-jae ElseIf_515d2a69
-ThenIf_515d2a69: 
-displayInteger _8
+jmp EndIf_a472a6a
+ElseIf_a472a6a: 
+displayInteger _0
 newLine 1
-jmp EndIf_515d2a69
-ElseIf_515d2a69: 
-displayInteger _9
-newLine 1
-EndIf_515d2a69: 
+EndIf_a472a6a: 
 ffree
-fild _5
-fild _2
-fild _3
-fmul
-fadd
-fstp varIntMul
-ffree
-fld varIntMul
-fild _3
-fxch 
-fcom
-fstsw ax
-sahf
-jne ElseIf_7e934230
-fild _2
-fild _3
-fxch 
-fcom
-fstsw ax
-sahf
-jae ElseIf_7e934230
-ThenIf_7e934230: 
-displayInteger _1001
+displayFloat varFloatMult, 2
 newLine 1
-jmp EndIf_7e934230
-ElseIf_7e934230: 
-displayInteger _1002
-newLine 1
-EndIf_7e934230: 
-ffree
-fld _5_5
-fstp varFloatMul
-ffree
-fld varFloatMul
-fld _5_5
-fxch 
-fcom
-fstsw ax
-sahf
-jne EndIf_41de2f4a
-fild _2
-fild _30
-fxch 
-fcom
-fstsw ax
-sahf
-jae EndIf_41de2f4a
-ThenIf_41de2f4a: 
-displayInteger _1003
-newLine 1
-jmp EndIf_41de2f4a
-EndIf_41de2f4a: 
-ffree
-fld _10_8
-fstp varFloatMul
-ffree
-fld _4_1
-fld _2_1
-fxch 
-fcom
-fstsw ax
-sahf
-je ThenIf_4d024cf5
-fld varFloatMul
-fld _30_1
-fxch 
-fcom
-fstsw ax
-sahf
-jb ElseIf_4d024cf5
-ThenIf_4d024cf5: 
-displayInteger _1004
-newLine 1
-jmp EndIf_4d024cf5
-ElseIf_4d024cf5: 
-displayInteger _1005
-newLine 1
-EndIf_4d024cf5: 
-ffree
-fld _4_1
-fld varFloatMul
-fxch 
-fcom
-fstsw ax
-sahf
-jne ThenIf_16e94dfc
-fild _2
-fild _3
-fxch 
-fcom
-fstsw ax
-sahf
-jbe EndIf_16e94dfc
-ThenIf_16e94dfc: 
-displayInteger _1006
-newLine 1
-jmp EndIf_16e94dfc
-EndIf_16e94dfc: 
+jmp While_7b76102d
+EndWhile_7b76102d: 
 ffree
 
 

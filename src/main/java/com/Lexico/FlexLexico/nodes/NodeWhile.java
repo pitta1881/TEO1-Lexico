@@ -23,4 +23,21 @@ public class NodeWhile extends Node {
             this.blockBody.stream().map(sentence -> sentence.graph(this.nodeBody.getIdNode())).reduce("", String::concat);
     }
 
+    @Override
+    protected String assembly() {
+        String etiquetaWhile = "While_" + Integer.toHexString(this.hashCode());
+        String etiquetaBlockBodyWhile = "BlockBodyWhile_" + Integer.toHexString(this.hashCode());
+        String etiquetaEndWhile = "EndWhile_" + Integer.toHexString(this.hashCode());
+
+        String comparatorAssembled = this.logical.assemblyCustom(etiquetaBlockBodyWhile, null, etiquetaEndWhile);
+        String blockBodyAssembled = this.blockBody.stream().map(sentence -> sentence.assembly()).reduce("", String::concat);
+
+        return etiquetaWhile + ": " + "\n" +
+                comparatorAssembled +
+                etiquetaBlockBodyWhile + ": " + "\n" +
+                blockBodyAssembled +
+                "jmp " + etiquetaWhile + "\n" +
+                etiquetaEndWhile + ": " + "\n";
+    }
+
 }

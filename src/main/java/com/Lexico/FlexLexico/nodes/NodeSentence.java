@@ -69,7 +69,7 @@ public class NodeSentence extends Node {
             return this.nodeIf.assembly() + "ffree\n";
         }
         if (this.nodeWhile != null) {
-            return this.nodeWhile.assembly();
+            return this.nodeWhile.assembly() + "ffree\n";
         }
         if (this.nodeWrite != null) {
             return this.nodeWrite.assembly();

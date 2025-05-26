@@ -1,0 +1,25 @@
+DECLARE.SECTION
+	[varInt, varFloat, varFloatMult] := [INT, FLOAT, FLOAT]
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+	varFloat = 25.5;
+	
+	WHILE ( varFloat > 0.0 ) {
+		varFloat = varFloat - 10.0;
+		WRITE ( varFloat );
+	};
+
+	varFloatMult = 10.0;
+
+	WHILE (( varFloatMult >= 10.0 ) AND (varFloatMult <= 50.0)) {
+		varFloatMult = varFloatMult + 10.0;
+		IF (varFloatMult == 50.0) THEN
+			WRITE ( 1 );
+		ELSE
+			WRITE ( 0 );
+		ENDIF;
+		WRITE ( varFloatMult );
+	};
+
+ENDPROGRAM.SECTION

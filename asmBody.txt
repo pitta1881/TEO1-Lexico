@@ -1,152 +1,67 @@
-fild _2
-fild _3
-fmul
-fstp varInt
-ffree
 fld _25_5
-fstp varFloatElse
+fstp varFloat
 ffree
-fld varInt
-fild _10
+While_2f017a7c: 
+fld varFloat
+fld _0_0
 fxch 
 fcom
 fstsw ax
 sahf
-je EndIf_58b79deb
-ThenIf_58b79deb: 
-fld _5_23
+jbe EndWhile_2f017a7c
+BlockBodyWhile_2f017a7c: 
+fld varFloat
+fld _10_0
+fsub
 fstp varFloat
 ffree
 displayFloat varFloat, 2
 newLine 1
-jmp EndIf_58b79deb
-EndIf_58b79deb: 
+jmp While_2f017a7c
+EndWhile_2f017a7c: 
 ffree
-fld varInt
-fild _10
+fld _10_0
+fstp varFloatMult
+ffree
+While_7b76102d: 
+fld varFloatMult
+fld _10_0
 fxch 
 fcom
 fstsw ax
 sahf
-ja EndIf_4238ba33
-ThenIf_4238ba33: 
+jb EndWhile_7b76102d
+fld varFloatMult
+fld _50_0
+fxch 
+fcom
+fstsw ax
+sahf
+ja EndWhile_7b76102d
+BlockBodyWhile_7b76102d: 
+fld varFloatMult
+fld _10_0
+fadd
+fstp varFloatMult
+ffree
+fld varFloatMult
+fld _50_0
+fxch 
+fcom
+fstsw ax
+sahf
+jne ElseIf_a472a6a
+ThenIf_a472a6a: 
 displayInteger _1
 newLine 1
-jmp EndIf_4238ba33
-EndIf_4238ba33: 
-ffree
-fld varFloatElse
-fld _2_0
-fxch 
-fcom
-fstsw ax
-sahf
-jae ElseIf_515d2a69
-ThenIf_515d2a69: 
-displayInteger _8
+jmp EndIf_a472a6a
+ElseIf_a472a6a: 
+displayInteger _0
 newLine 1
-jmp EndIf_515d2a69
-ElseIf_515d2a69: 
-displayInteger _9
-newLine 1
-EndIf_515d2a69: 
+EndIf_a472a6a: 
 ffree
-fild _5
-fild _2
-fild _3
-fmul
-fadd
-fstp varIntMul
-ffree
-fld varIntMul
-fild _3
-fxch 
-fcom
-fstsw ax
-sahf
-jne ElseIf_7e934230
-fild _2
-fild _3
-fxch 
-fcom
-fstsw ax
-sahf
-jae ElseIf_7e934230
-ThenIf_7e934230: 
-displayInteger _1001
+displayFloat varFloatMult, 2
 newLine 1
-jmp EndIf_7e934230
-ElseIf_7e934230: 
-displayInteger _1002
-newLine 1
-EndIf_7e934230: 
-ffree
-fld _5_5
-fstp varFloatMul
-ffree
-fld varFloatMul
-fld _5_5
-fxch 
-fcom
-fstsw ax
-sahf
-jne EndIf_41de2f4a
-fild _2
-fild _30
-fxch 
-fcom
-fstsw ax
-sahf
-jae EndIf_41de2f4a
-ThenIf_41de2f4a: 
-displayInteger _1003
-newLine 1
-jmp EndIf_41de2f4a
-EndIf_41de2f4a: 
-ffree
-fld _10_8
-fstp varFloatMul
-ffree
-fld _4_1
-fld _2_1
-fxch 
-fcom
-fstsw ax
-sahf
-je ThenIf_4d024cf5
-fld varFloatMul
-fld _30_1
-fxch 
-fcom
-fstsw ax
-sahf
-jb ElseIf_4d024cf5
-ThenIf_4d024cf5: 
-displayInteger _1004
-newLine 1
-jmp EndIf_4d024cf5
-ElseIf_4d024cf5: 
-displayInteger _1005
-newLine 1
-EndIf_4d024cf5: 
-ffree
-fld _4_1
-fld varFloatMul
-fxch 
-fcom
-fstsw ax
-sahf
-jne ThenIf_16e94dfc
-fild _2
-fild _3
-fxch 
-fcom
-fstsw ax
-sahf
-jbe EndIf_16e94dfc
-ThenIf_16e94dfc: 
-displayInteger _1006
-newLine 1
-jmp EndIf_16e94dfc
-EndIf_16e94dfc: 
+jmp While_7b76102d
+EndWhile_7b76102d: 
 ffree
