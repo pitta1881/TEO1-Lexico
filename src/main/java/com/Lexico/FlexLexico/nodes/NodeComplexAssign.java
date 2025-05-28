@@ -1,5 +1,7 @@
 package com.Lexico.FlexLexico.nodes;
 
+import com.Lexico.FlexLexico.store.StoreDeclaredVars;
+
 public class NodeComplexAssign extends Node {
 
     public final Node left;
@@ -21,20 +23,17 @@ public class NodeComplexAssign extends Node {
 
     @Override
     protected String assembly() {
+        String instructionType = StoreDeclaredVars.get(left.getDescriptionNode()).type().get();
         String value = right.getDescriptionNode().replace('.', '_');
         String instruction;
         if (Boolean.TRUE.equals(isID(right))) {
-            instruction = Boolean.TRUE.equals(isFloat(right)) ? "fld " : "fild ";
+            instruction = instructionType.equals("INT") ? "fild " : "fld ";
         } else {
-            instruction = Boolean.TRUE.equals(isFloat(right)) ? "fld _" : "fild _";
+            instruction = instructionType.equals("INT") ? "fild _" : "fld _";
         }
+        String instructionStore = instructionType.equals("INT") ? "fistp " : "fstp ";
         return instruction + value + "\n" +
-                "fstp " + left.getDescriptionNode() + "\n";
-    }
-
-
-    private Boolean isFloat(Node node) {
-        return node != null && (node.getDescriptionNode().contains(".") || node.getDescriptionNode().matches(".*[a-zA-Z].*"));
+                instructionStore + left.getDescriptionNode() + "\n";
     }
 
     private Boolean isID(Node node) {

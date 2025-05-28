@@ -7,17 +7,40 @@ include number.asm
 
 .DATA
 ;variables de la tabla de simbolos
-mensaje DB 'Hola, mundo!$'   ; Cadena terminada en '$' para DOS
+varFloatMul DD          ?
+varIntMul   DD          ?
+varFloatElse    DD          ?
+varFloatComp    DD          ?
+varIntComp  DD          ?
+varCompuest DD          ?
+varFloat2   DD          ?
+varInt2     DD          ?
 varFloatMult    DD          ?
 varFloat    DD          ?
 varInt      DD          ?
-_25_5       DD          25.5
-_0_0        DD          0.0
-_10_0       DD          10.0
-_50_0       DD          50.0
+found       DD          ?
+searchVal   DD          ?
+i           DD          ?
+fibNext     DD          ?
+fib2        DD          ?
+fib1        DD          ?
+n           DD          ?
+factorial   DD          ?
+passMark    DD          ?
+avg         DD          ?
+count       DD          ?
+sum         DD          ?
 _1          DD          1
+_5          DD          5
+message_330bbc4 DB          'Factorial of 5:$'
 _0          DD          0
-
+message_5a5e42fd    DB          'Fibonacci sequence:$'
+_3          DD          3
+_8          DD          8
+_7          DD          7
+_10         DD          10
+message_79b1975b    DB          'Value 7 found in range 1 to 10$'
+message_7fd9ed32    DB          'Value 7 not found$'
 
 
 .CODE     ;comienzo de la zona de codigo
@@ -27,72 +50,141 @@ _start:
     MOV ES,EAX
 ;-------START REAL PROGRAM-----------
 
-fld _25_5
-fstp varFloat
+fild _1
+fistp factorial
 ffree
-While_2f017a7c: 
-fld varFloat
-fld _0_0
+fild _5
+fistp n
+ffree
+fild _1
+fistp count
+ffree
+While_66c23f3f: 
+fld count
+fld n
 fxch 
 fcom
 fstsw ax
 sahf
-jbe EndWhile_2f017a7c
-BlockBodyWhile_2f017a7c: 
-fld varFloat
-fld _10_0
-fsub
-fstp varFloat
+ja EndWhile_66c23f3f
+BlockBodyWhile_66c23f3f: 
+fild factorial
+fild count
+fmul
+fistp factorial
 ffree
-displayFloat varFloat, 2
-newLine 1
-jmp While_2f017a7c
-EndWhile_2f017a7c: 
-ffree
-fld _10_0
-fstp varFloatMult
-ffree
-While_7b76102d: 
-fld varFloatMult
-fld _10_0
-fxch 
-fcom
-fstsw ax
-sahf
-jb EndWhile_7b76102d
-fld varFloatMult
-fld _50_0
-fxch 
-fcom
-fstsw ax
-sahf
-ja EndWhile_7b76102d
-BlockBodyWhile_7b76102d: 
-fld varFloatMult
-fld _10_0
+fild count
+fild _1
 fadd
-fstp varFloatMult
+fistp count
 ffree
-fld varFloatMult
-fld _50_0
+jmp While_66c23f3f
+EndWhile_66c23f3f: 
+ffree
+displayString message_330bbc4
+newLine 1
+displayInteger factorial
+newLine 1
+fild _0
+fistp fib1
+ffree
+fild _1
+fistp fib2
+ffree
+displayString message_5a5e42fd
+newLine 1
+displayInteger fib1
+newLine 1
+displayInteger fib2
+newLine 1
+fild _3
+fistp i
+ffree
+While_40eb77bb: 
+fld i
+fld _8
 fxch 
 fcom
 fstsw ax
 sahf
-jne ElseIf_a472a6a
-ThenIf_a472a6a: 
-displayInteger _1
-newLine 1
-jmp EndIf_a472a6a
-ElseIf_a472a6a: 
-displayInteger _0
-newLine 1
-EndIf_a472a6a: 
+ja EndWhile_40eb77bb
+BlockBodyWhile_40eb77bb: 
+fild fib1
+fild fib2
+fadd
+fistp fibNext
 ffree
-displayFloat varFloatMult, 2
+displayInteger fibNext
 newLine 1
-jmp While_7b76102d
-EndWhile_7b76102d: 
+fild fib2
+fistp fib1
+ffree
+fild fibNext
+fistp fib2
+ffree
+fild i
+fild _1
+fadd
+fistp i
+ffree
+jmp While_40eb77bb
+EndWhile_40eb77bb: 
+ffree
+fild _7
+fistp searchVal
+ffree
+fild _0
+fistp found
+ffree
+fild _1
+fistp count
+ffree
+While_11a66ae1: 
+fld count
+fld _10
+fxch 
+fcom
+fstsw ax
+sahf
+ja EndWhile_11a66ae1
+BlockBodyWhile_11a66ae1: 
+fld count
+fld searchVal
+fxch 
+fcom
+fstsw ax
+sahf
+jne EndIf_34508194
+ThenIf_34508194: 
+fild _1
+fistp found
+ffree
+jmp EndIf_34508194
+EndIf_34508194: 
+ffree
+fild count
+fild _1
+fadd
+fistp count
+ffree
+jmp While_11a66ae1
+EndWhile_11a66ae1: 
+ffree
+fld found
+fld _1
+fxch 
+fcom
+fstsw ax
+sahf
+jne ElseIf_3f3667f
+ThenIf_3f3667f: 
+displayString message_79b1975b
+newLine 1
+jmp EndIf_3f3667f
+ElseIf_3f3667f: 
+displayString message_7fd9ed32
+newLine 1
+EndIf_3f3667f: 
 ffree
 
 

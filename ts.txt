@@ -1,9 +1,34 @@
+varFloatMul	DD        	?
+varIntMul 	DD        	?
+varFloatElse	DD        	?
+varFloatComp	DD        	?
+varIntComp	DD        	?
+varCompuest	DD        	?
+varFloat2 	DD        	?
+varInt2   	DD        	?
 varFloatMult	DD        	?
 varFloat  	DD        	?
 varInt    	DD        	?
-_25_5     	DD        	25.5
-_0_0      	DD        	0.0
-_10_0     	DD        	10.0
-_50_0     	DD        	50.0
+found     	DD        	?
+searchVal 	DD        	?
+i         	DD        	?
+fibNext   	DD        	?
+fib2      	DD        	?
+fib1      	DD        	?
+n         	DD        	?
+factorial 	DD        	?
+passMark  	DD        	?
+avg       	DD        	?
+count     	DD        	?
+sum       	DD        	?
 _1        	DD        	1
+_5        	DD        	5
+message_330bbc4	DB        	'Factorial of 5:$'
 _0        	DD        	0
+message_5a5e42fd	DB        	'Fibonacci sequence:$'
+_3        	DD        	3
+_8        	DD        	8
+_7        	DD        	7
+_10       	DD        	10
+message_79b1975b	DB        	'Value 7 found in range 1 to 10$'
+message_7fd9ed32	DB        	'Value 7 not found$'

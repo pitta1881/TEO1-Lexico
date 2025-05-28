@@ -1,0 +1,13 @@
+DECLARE.SECTION
+	[varInt, varFloat] := [INT, FLOAT]
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+	varInt = 5;
+	varFloat = 10.5;
+	WRITE ( "hola mundo" );
+	WRITE ( varInt );
+	WRITE ( varFloat );
+	WRITE ( 18 );
+	WRITE ( 50.1 );
+ENDPROGRAM.SECTION

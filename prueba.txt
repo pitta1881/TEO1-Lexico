@@ -1,58 +1,78 @@
 DECLARE.SECTION
-	[a, b, c, d, e, z] := [INT, STRING, FLOAT, INT, STRING, INT]
-	[s1, i1] := [STRING, INT]
-	[f1, i2] := [FLOAT, INT]
-	[f2, f3, i3, s2] := [FLOAT, FLOAT, INT, STRING]
-	[varId] := [STRING]
+	[varInt, varFloat, varFloatMult, varInt2, varFloat2, varCompuest, varIntComp, varFloatComp, varFloatElse, varIntMul, varFloatMul] := [INT, FLOAT, FLOAT, INT, FLOAT, FLOAT, INT, FLOAT, FLOAT, INT, FLOAT]
+	[sum, count, avg, passMark, factorial, n, fib1, fib2, fibNext, i, searchVal, found] := [INT, INT, FLOAT, FLOAT, INT, INT, INT, INT, INT, INT, INT, INT]
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
-	e = "test";
-	z = 4;
-	AsigComp([a, b, c, d] : [1, e, 2.5, z]);
 
-	s1 = "pato";
-	s1 = "hola mundo";
-	i1 = 3;
-	f1 = 3.5;
-	f2 = 4.9 + f1;
-	i2 = 50 + 4;
-	i3 = (37 + 3 - i2) / 5;
+	//* Calculate average of 5 even numbers and check pass/fail *//
+	sum = 0;
+	count = 1;
+	WHILE (count <= 5) {
+		sum = sum + (count * 2);
+		count = count + 1;
+	};
+	avg = sum / 5.0;
+	WRITE ( "Average is:" );
+	WRITE ( avg );
 
-	IF ( 2 == 3) THEN
-		i1 = 1;
-		varId = "never here";
-	ENDIF;
-
-	IF (( 2 == 3) AND ( 2 < 3 )) THEN
-		i1 = 1;
-	ENDIF;
-
-	IF (( 2 == 3+2) AND ( (2+4) /3 < 3)) THEN
-		f1 = 1.1;
+	passMark = 6.0;
+	IF (avg >= passMark) THEN
+		WRITE ( "Status: PASSED" );
 	ELSE
-		f2 = 0.3;
+		WRITE ( "Status: FAILED" );
 	ENDIF;
-	
-	WHILE ( i1 <= 10 ) {
-		i3 = i3 * 2;
-		i1 = i1 + 1;
+
+	//* Sum first 10 integers *//
+	sum = 0;
+	count = 1;
+	WHILE (count <= 10) {
+		sum = sum + count;
+		count = count + 1;
+	};
+	WRITE ( "Sum of 1 to 10:" );
+	WRITE ( sum );
+
+	//* Calculate factorial of 5 *//
+	factorial = 1;
+	n = 5;
+	count = 1;
+	WHILE (count <= n) {
+		factorial = factorial * count;
+		count = count + 1;
+	};
+	WRITE ( "Factorial of 5:" );
+	WRITE ( factorial );
+
+	//* Generate first 8 Fibonacci numbers *//
+	fib1 = 0;
+	fib2 = 1;
+	WRITE ( "Fibonacci sequence:" );
+	WRITE ( fib1 );
+	WRITE ( fib2 );
+	i = 3;
+	WHILE (i <= 8) {
+		fibNext = fib1 + fib2;
+		WRITE ( fibNext );
+		fib1 = fib2;
+		fib2 = fibNext;
+		i = i + 1;
 	};
 
-	WHILE (( i2 <= 100 ) OR (s1 == "verdadero")) {
-		i2 = i2 + 1;
-		IF (i2 == 50) THEN
-			varId = "maybe here";
+	//* Search for value 7 in range 1 to 10 *//
+	searchVal = 7;
+	found = 0;
+	count = 1;
+	WHILE (count <= 10) {
+		IF (count == searchVal) THEN
+			found = 1;
 		ENDIF;
+		count = count + 1;
 	};
+	IF (found == 1) THEN
+		WRITE ( "Value 7 found in range 1 to 10" );
+	ELSE
+		WRITE ( "Value 7 not found" );
+	ENDIF;
 
-	WRITE ( "hola" );
-	WRITE ( varId );
-	WRITE ( "Hola mas id" varId );
-
-	//* this is a comment *//
-
-	//*
-		//* this is a nested comment *//
-	*//
 ENDPROGRAM.SECTION

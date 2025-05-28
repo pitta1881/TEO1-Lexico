@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java_cup.runtime.*;
 import com.Lexico.FlexLexico.nodes.*;
+import com.Lexico.FlexLexico.store.StoreDeclaredVars;
 
 // Código del parser
 parser code
@@ -32,7 +33,6 @@ action code
 	List<Node> declareTypesType = new ArrayList<>();
     List<String> declareVarTypes = new ArrayList<>();
 
-    Map<String, TokenObject> globalDeclareVariables = new HashMap<>();
     String currentType = null;
 
     public void addNewRule(int id, String start, RuleItem... rules) {
@@ -79,10 +79,10 @@ action code
         for (int i = 0; i < sizeLength; i++) {
             String varType = declareVarTypes.get(i);
             String id = declareTypesIds.get(i);
-            if (globalDeclareVariables.containsKey(id) && globalDeclareVariables.get(id).type().isPresent()) {
-                String tokenType = globalDeclareVariables.get(id).type().get();
+            if (StoreDeclaredVars.containsKey(id) && StoreDeclaredVars.get(id).type().isPresent()) {
+                String tokenType = StoreDeclaredVars.get(id).type().get();
                 if (varType.equals("ID")) {
-                    TokenObject token = globalDeclareVariables.get(id);
+                    TokenObject token = StoreDeclaredVars.get(id);
                     if (token != null && token.type().isPresent()) {
                         varType = token.type().get();
                     }
@@ -100,22 +100,22 @@ action code
 
     public void checkDuplicatedDeclaredVariables(List<TokenObject> tokenIds) {
         for (TokenObject token : tokenIds) {
-            if (globalDeclareVariables.containsKey(token.value())) {
+            if (StoreDeclaredVars.containsKey(token.value())) {
                 throw new RuntimeException("Error: Variable '" + token.value() + "' ya declarada.");
             }
-            globalDeclareVariables.put(token.value(), token);
+            StoreDeclaredVars.put(token.value(), token);
         }
     }
 
     public void checkVariableIsDeclared(String id) {
-        if (!globalDeclareVariables.containsKey(id)) {
+        if (!StoreDeclaredVars.containsKey(id)) {
             throw new RuntimeException("Error: Variable '" + id + "' no declarada.");
         }
     }
 
-    public void setCurrentType(String type, Object value) {
+    public void setCurrentType(String type, String value) {
         if (type.equals("ID")) {
-            TokenObject token = globalDeclareVariables.get(value);
+            TokenObject token = StoreDeclaredVars.get(value);
             if (token != null && token.type().isPresent()) {
                 type = token.type().get();
             }
@@ -132,7 +132,7 @@ action code
     }
 
     public void checkCurrentType(String id) {
-        TokenObject token = globalDeclareVariables.get(id);
+        TokenObject token = StoreDeclaredVars.get(id);
         if (token != null && token.type().isPresent()) {
             String type = token.type().get();
             if (!type.equals(currentType)) {
@@ -142,7 +142,7 @@ action code
     }
 
     public String getCurrentType(String id) {
-        TokenObject token = globalDeclareVariables.get(id);
+        TokenObject token = StoreDeclaredVars.get(id);
         if (token != null && token.type().isPresent()) {
             return token.type().get();
         }
@@ -177,8 +177,7 @@ non terminal NodeComparation COMPARACION;
 non terminal NodeLogical CONDICION;
 non terminal NodeIf SELECCION;
 non terminal NodeWhile ITERACION;
-non terminal NodeWrite SALIDA;
-non terminal List<Node> TEXTO;
+non terminal NodeWrite SALIDA, TEXTO;
 
 start with START;
 
@@ -736,62 +735,36 @@ SALIDA ::= Write:w Parentesis_abierto:pa TEXTO:txt Parentesis_cerrado:pc {:
                     addNonTerminalRuleItem("TEXTO"),
                     addTerminalRuleItem(pc)
                 );
-                RESULT = new NodeWrite(txt);
+                RESULT = txt;
             :};
 
-TEXTO ::= Cte_s:s TEXTO:textList {:
-                tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
-                addNewRule(59, "TEXTO -> ",
-                    addTerminalRuleItem(s),
-                    addNonTerminalRuleItem("TEXTO")
-                );
-                textList.add(new Node(s.replace("\"", "'")));
-                RESULT = textList;
-            :}
-            | Id:id TEXTO:textList {:
-                addNewRule(60, "TEXTO -> ",
-                    addTerminalRuleItem(id),
-                    addNonTerminalRuleItem("TEXTO")
-                );
-                textList.add(new Node(id));
-                checkVariableIsDeclared(id);
-                RESULT = textList;
-            :}
-            | Cte_s:s {:
+TEXTO ::= Cte_s:s {:
                 tokenList.add(new TokenObject("Cte_s", s, Optional.empty()));
                 addNewRule(61, "TEXTO -> ",
                     addTerminalRuleItem(s)
                 );
-                List<Node> textList = new ArrayList<Node>();
-                textList.add(new Node(s.replace("\"", "'")));
-                RESULT = textList;
+                RESULT = new NodeWrite(new Node(s.replace("\"", "'")), "STRING");
             :}
             | Id:id {:
                 addNewRule(62, "TEXTO -> ",
                     addTerminalRuleItem(id)
                 );
-                List<Node> textList = new ArrayList<Node>();
                 checkVariableIsDeclared(id);
-                textList.add(new Node(id, getCurrentType(id)));
-                RESULT = textList;
+                RESULT = new NodeWrite(new Node(id), getCurrentType(id));
             :}
             | Cte_f:f {:
                 tokenList.add(new TokenObject("Cte_f", f, Optional.empty()));
                 addNewRule(63, "TEXTO -> ",
                     addTerminalRuleItem(f)
                 );
-                List<Node> textList = new ArrayList<Node>();
-                textList.add(new Node(f, "FLOAT"));
-                RESULT = textList;
+                RESULT = new NodeWrite(new Node(f), "FLOAT");
             :}
             | Cte_i:e {:
                 tokenList.add(new TokenObject("Cte_i", e, Optional.empty()));
                 addNewRule(64, "TEXTO -> ",
                     addTerminalRuleItem(e)
                 );
-                List<Node> textList = new ArrayList<Node>();
-                textList.add(new Node(e, "INT"));
-                RESULT = textList;
+                RESULT = new NodeWrite(new Node(e), "INT");
             :};
 
 PROGRAM_SECTION_WRITE ::= Program_section:ps PROGRAM_WRITE Endprogram_section:eps {:

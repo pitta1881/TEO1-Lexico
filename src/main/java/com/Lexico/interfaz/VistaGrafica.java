@@ -13,6 +13,8 @@ import java.util.List;
 import java.awt.*;
 
 import com.Lexico.FlexLexico.*;
+import com.Lexico.FlexLexico.store.StoreDeclaredVars;
+import com.Lexico.FlexLexico.store.StoreMessages;
 
 public class VistaGrafica {
 
@@ -125,6 +127,8 @@ public class VistaGrafica {
 			public void actionPerformed(ActionEvent e) {
 				if(!inputTextArea.getText().isEmpty()) {
 					try {
+						StoreMessages.clear(); // Limpiar mensajes previos
+						StoreDeclaredVars.clear(); // Limpiar variables declaradas
 						tokenList.clear();
 						rulesList.clear();
 						TokenRulesObject tokenRules = FlexLexico.analizar(inputTextArea.getText());
@@ -224,12 +228,14 @@ public class VistaGrafica {
 		StringBuilder sb = new StringBuilder();
 		uniqueTokens.stream()
 				.filter(token -> token.name().equals("ID"))
-				.forEach(token -> sb.append(String.format(FORMAT_STRING, token.value(), token.type().isPresent() && token.type().get().equals("STRING") ? "DB" : "DD", "?")));
+				.forEach(token -> sb.append(String.format(FORMAT_STRING, token.value(), token.value().startsWith("\"") ? "DB" : "DD", "?")));
 		uniqueTokens.stream()
 				.filter(token -> constValidTokenNames.contains(token.name()))
 				.filter(this::validateTokenValue)
 				.forEach(token -> {
-						sb.append(String.format(FORMAT_STRING, "_" + token.value().replace('.', '_'), token.type().isPresent() && token.type().get().equals("STRING") ? "DB" : "DD", token.value()));
+					String key = token.value().startsWith("\"") ? StoreMessages.getKeyByValue(token.value()) : "_" + token.value().replace('.', '_');
+					String value = token.value().startsWith("\"") ? "'" + token.value().replaceAll("^\"|\"$", "") + "$'" : token.value();
+					sb.append(String.format(FORMAT_STRING, key, token.value().startsWith("\"") ? "DB" : "DD", value));
 				});
 		try (FileWriter writer = new FileWriter(file)) {
 			writer.write(sb.toString());

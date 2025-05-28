@@ -3,11 +3,17 @@ DECLARE.SECTION
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
+	varInt = 10 * 10;
 	varFloat = 25.5;
 	
 	WHILE ( varFloat > 0.0 ) {
 		varFloat = varFloat - 10.0;
 		WRITE ( varFloat );
+	};
+	
+	WHILE ( varInt > 0 ) {
+		varInt = varInt - 10;
+		WRITE ( varInt );
 	};
 
 	varFloatMult = 10.0;
@@ -15,9 +21,9 @@ PROGRAM.SECTION
 	WHILE (( varFloatMult >= 10.0 ) AND (varFloatMult <= 50.0)) {
 		varFloatMult = varFloatMult + 10.0;
 		IF (varFloatMult == 50.0) THEN
-			WRITE ( 1 );
+			WRITE ( "verdadero" );
 		ELSE
-			WRITE ( 0 );
+			WRITE ( "falso" );
 		ENDIF;
 		WRITE ( varFloatMult );
 	};

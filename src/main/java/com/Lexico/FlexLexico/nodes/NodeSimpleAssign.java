@@ -1,5 +1,7 @@
 package com.Lexico.FlexLexico.nodes;
 
+import com.Lexico.FlexLexico.store.StoreDeclaredVars;
+
 public class NodeSimpleAssign extends Node {
 
     public final Node left;
@@ -21,7 +23,10 @@ public class NodeSimpleAssign extends Node {
 
     @Override
     protected String assembly() {
-        return right.assembly() +
-                "fstp " + left.getDescriptionNode() + "\n";
+        String instructionType = StoreDeclaredVars.get(left.getDescriptionNode()).type().get();
+        String rightAssembled = right.assemblyCustom(instructionType);
+        String instruction = instructionType.equals("INT") ? "fistp " : "fstp ";
+        return rightAssembled +
+                instruction + left.getDescriptionNode() + "\n";
     }
 }

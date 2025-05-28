@@ -2,8 +2,8 @@ package com.Lexico.FlexLexico.nodes;
 
 public class NodeArithmetic extends Node {
     
-    public final Node left;
-    public final Node right;
+    public final NodeArithmetic left;
+    public final NodeArithmetic right;
     public final String operator;
     public final Node factor;
 
@@ -36,13 +36,17 @@ public class NodeArithmetic extends Node {
 
     @Override
     protected String assembly() {
+        return assemblyCustom("FLOAT");
+    }
+
+    protected String assemblyCustom(String instructionType) {
         if (factor != null) {
             String value = factor.getDescriptionNode().replace('.', '_');
             String instruction;
             if (Boolean.TRUE.equals(isID(factor))) {
-                instruction = Boolean.TRUE.equals(isFloat(factor)) ? "fld " : "fild ";
+                instruction = instructionType.equals("INT") ? "fild " : "fld ";
             } else {
-                instruction = Boolean.TRUE.equals(isFloat(factor)) ? "fld _" : "fild _";
+                instruction = instructionType.equals("INT") ? "fild _" : "fld _";
             }
             return instruction + value + "\n";
         }
@@ -53,13 +57,9 @@ public class NodeArithmetic extends Node {
             case "/" -> "fdiv";
             default -> throw new IllegalArgumentException("Unsupported operator: " + operator);
         };
-        return right.assembly() +
-                left.assembly() +
+        return right.assemblyCustom(instructionType) +
+                left.assemblyCustom(instructionType) +
                 operatorInstruction + "\n";
-    }
-
-    private Boolean isFloat(Node node) {
-        return node != null && (node.getDescriptionNode().contains(".") || node.getDescriptionNode().matches(".*[a-zA-Z].*"));
     }
 
     private Boolean isID(Node node) {

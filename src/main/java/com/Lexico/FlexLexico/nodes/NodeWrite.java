@@ -2,32 +2,43 @@ package com.Lexico.FlexLexico.nodes;
 
 import java.util.List;
 
+import com.Lexico.FlexLexico.store.StoreMessages;
+
 public class NodeWrite extends Node {
 
-    private List<Node> listNodeText;
+    private Node nodeText;
+    private String type;
+    private String keyIfString = null;
 
-    public NodeWrite(List<Node> listNodeText) {
+    public NodeWrite(Node nodeText, String type) {
         super("WRITE");
-        this.listNodeText = listNodeText;
+        this.nodeText = nodeText;
+        this.type = type;
+        if (type.equals("STRING")) {
+            keyIfString = "message_" + Integer.toHexString(this.hashCode());
+            StoreMessages.setMessage(keyIfString, nodeText.getDescriptionNode());
+        }
     }
 
     @Override
     protected String graph(String idPadre) {
         final String myId = this.getIdNode();
-        return super.graph(idPadre) + 
-            listNodeText.stream()
-                .sorted((a, b) -> -1) // Reverse the list
-                .map(node -> node.graph(myId))
-                .reduce("", String::concat);
+        return super.graph(idPadre) + nodeText.graph(myId);
     }
 
     @Override
     public String assembly() {
-        String displayString = listNodeText.get(0).getTypeNode().equals("FLOAT") ? 
-                    "displayFloat _" + listNodeText.get(0).getDescriptionNode().replace('.', '_') + ", 2\n":
-                    "displayInteger _" + listNodeText.get(0).getDescriptionNode() + "\n";
-        displayString = Boolean.TRUE.equals(isID(listNodeText.get(0))) ? displayString.replace("_", "") : displayString;
-        return displayString +
+        String displayWrite;
+        if (this.type.equals("FLOAT")) {
+            displayWrite = "displayFloat _" + nodeText.getDescriptionNode().replace('.', '_') + ", 2\n";
+            displayWrite = Boolean.TRUE.equals(isID(nodeText)) ? displayWrite.replace("_", "") : displayWrite;
+        } else if (this.type.equals("STRING")) {
+            displayWrite = "displayString " + keyIfString + "\n";
+        } else {
+            displayWrite = "displayInteger _" + nodeText.getDescriptionNode() + "\n";
+            displayWrite = Boolean.TRUE.equals(isID(nodeText)) ? displayWrite.replace("_", "") : displayWrite;
+        }
+        return displayWrite +
             "newLine 1\n";
     }
 
