@@ -24,7 +24,7 @@ CONST_NUM_INT = {DIGITO}+
 CONST_BASE_BIN = "0b"(0|1)+
 ID_ERROR = _({LETRA}|{DIGITO}|_)*
 ID = {LETRA_MINUSCULA}({LETRA}|{DIGITO}|_)*
-COMENTARIOS = "//*" ~ "//*" ~ "*//" ~ "*//" | "//*" ~ "*//"
+COMENTARIOS = "//*"([^*]|\*+[^/])*"\*//"
 
 %%
 

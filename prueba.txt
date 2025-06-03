@@ -1,18 +1,33 @@
 DECLARE.SECTION
-	[varInt, varFloat, varFloatMult, varInt2, varFloat2, varCompuest, varIntComp, varFloatComp, varFloatElse, varIntMul, varFloatMul] := [INT, FLOAT, FLOAT, INT, FLOAT, FLOAT, INT, FLOAT, FLOAT, INT, FLOAT]
-	[sum, count, avg, passMark, factorial, n, fib1, fib2, fibNext, i, searchVal, found] := [INT, INT, FLOAT, FLOAT, INT, INT, INT, INT, INT, INT, INT, INT]
+	[zeroInt, zeroFloat] := [INT, FLOAT]
+	[sumInt, sumFloat, countInt, countFloat] := [INT, FLOAT, INT, FLOAT]
+	[avg, passMark] := [FLOAT, FLOAT]
+	[factorial, n] := [INT, INT]
+	[fib1, fib2, fibNext, i] := [INT, INT, INT, INT]
+	[searchVal, found] := [INT, INT]
 ENDDECLARE.SECTION
 
 PROGRAM.SECTION
+	AsigComp([zeroInt, zeroFloat] : [0, 0.0]);
+
+	//* Sum first 10 integers -> ∑(i) from i = 1 to 10*//
+	sumInt = zeroInt;
+	countInt = 1;
+	WHILE (countInt <= 10) {
+		sumInt = sumInt + countInt;
+		countInt = countInt + 1;
+	};
+	WRITE ( "Sum of 1 to 10:" );
+	WRITE ( sumInt );
 
 	//* Calculate average of 5 even numbers and check pass/fail *//
-	sum = 0;
-	count = 1;
-	WHILE (count <= 5) {
-		sum = sum + (count * 2);
-		count = count + 1;
+	sumFloat = zeroFloat;
+	countFloat = 1.0;
+	WHILE (countFloat <= 5.0) {
+		sumFloat = sumFloat + (countFloat * 2.0);
+		countFloat = countFloat + 1.0;
 	};
-	avg = sum / 5.0;
+	avg = sumFloat / 5.0;
 	WRITE ( "Average is:" );
 	WRITE ( avg );
 
@@ -23,23 +38,13 @@ PROGRAM.SECTION
 		WRITE ( "Status: FAILED" );
 	ENDIF;
 
-	//* Sum first 10 integers *//
-	sum = 0;
-	count = 1;
-	WHILE (count <= 10) {
-		sum = sum + count;
-		count = count + 1;
-	};
-	WRITE ( "Sum of 1 to 10:" );
-	WRITE ( sum );
-
 	//* Calculate factorial of 5 *//
 	factorial = 1;
 	n = 5;
-	count = 1;
-	WHILE (count <= n) {
-		factorial = factorial * count;
-		count = count + 1;
+	countInt = 1;
+	WHILE (countInt <= n) {
+		factorial = factorial * countInt;
+		countInt = countInt + 1;
 	};
 	WRITE ( "Factorial of 5:" );
 	WRITE ( factorial );
@@ -62,12 +67,12 @@ PROGRAM.SECTION
 	//* Search for value 7 in range 1 to 10 *//
 	searchVal = 7;
 	found = 0;
-	count = 1;
-	WHILE (count <= 10) {
-		IF (count == searchVal) THEN
+	countInt = 1;
+	WHILE (countInt <= 10) {
+		IF (countInt == searchVal) THEN
 			found = 1;
 		ENDIF;
-		count = count + 1;
+		countInt = countInt + 1;
 	};
 	IF (found == 1) THEN
 		WRITE ( "Value 7 found in range 1 to 10" );
