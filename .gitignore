@@ -2,3 +2,5 @@ bin
 .idea
 .class
 target
+assembler/Final.exe
+assembler/Final.obj

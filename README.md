@@ -53,6 +53,17 @@ java -jar .\FlexLexico.jar
 
 The UI will allow you to load the input file or write in the text area and display the results. The tokens will be saved in ts.txt.
 
+## Assembly
+
+To create the **Final.asm**, follow this steps:
+
+1. Run **FlexLexico.jar**
+2. Write and compile a program (or choose some prueba\*.txt)
+3. Click 'Analizar' button
+4. Copy the new content in _asmBody.txt_ and paste it in _assembler/Final.asm_, just after comment: **;-------START REAL PROGRAM-----------**
+5. Copy the new content in _ts.txt_ and paste it in _assembler/Final.asm_, just after section: **.DATA**
+6. Assemble, build and execute assembly program
+
 ## Anexo
 
 [Link Documento REGEX](https://docs.google.com/document/d/1_P1gy3LVajhrFVl_u1IOgZa34uSg5c2fvrE33nPvs7E/edit?usp=sharing)  
