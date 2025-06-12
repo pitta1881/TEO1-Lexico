@@ -55,7 +55,7 @@ The UI will allow you to load the input file or write in the text area and displ
 
 ## Assembly
 
-To create the **Final.asm**, follow this steps:
+To create the **Final.asm**, watch _DemoAssembler.mkv_ or follow this steps:
 
 1. Run **FlexLexico.jar**
 2. Write and compile a program (or choose some prueba\*.txt)
