@@ -55,14 +55,7 @@ The UI will allow you to load the input file or write in the text area and displ
 
 ## Assembly
 
-To create the **Final.asm**, watch _DemoAssembler.mkv_ or follow this steps:
-
-1. Run **FlexLexico.jar**
-2. Write and compile a program (or choose some prueba\*.txt)
-3. Click 'Analizar' button
-4. Copy the new content in _asmBody.txt_ and paste it in _assembler/Final.asm_, just after comment: **;-------START REAL PROGRAM-----------**
-5. Copy the new content in _ts.txt_ and paste it in _assembler/Final.asm_, just after section: **.DATA**
-6. Assemble, build and execute assembly program
+Once you run **FlexLexico.jar** and write some program, click on 'Analizar' button, this will create the **Final.asm** into **assembler/Final.asm**, now you can assemble, build and execute assembly program using an IDE like **GUI Turbo Assembler**
 
 ## Anexo
 

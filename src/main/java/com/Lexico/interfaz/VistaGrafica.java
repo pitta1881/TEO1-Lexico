@@ -1,10 +1,7 @@
 package com.Lexico.interfaz;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
-import java.awt.Font;
 import java.io.*;
 import javax.swing.*;
 import java.util.ArrayList;
@@ -137,6 +134,8 @@ public class VistaGrafica {
 						printTokens(tokenList);
 						printRules(rulesList);
 						saveTsFile(tokenList);
+						saveDataSectionIntoStatic(tokenList);
+						FlexLexico.updateFinalAsmWithSections();
 					} catch (Exception e1) {
 						showErrorDialog(e1.getMessage());
 					}
@@ -221,9 +220,31 @@ public class VistaGrafica {
 
 	private void saveTsFile(ArrayList<TokenObject> tokenList) {
 		ArrayList<TokenObject> uniqueTokens = removeDuplicatesByName(tokenList);
+		int columnWidth = 40; // Define a fixed width for each column
+		File file = new File("ts.txt");
+		List<String> constValidTokenNames = Arrays.asList("Cte_s", "Cte_f", "Cte_i", "Cte_b");
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\n", "NOMBRE", "TOKEN", "TIPO", "VALOR"));
+		uniqueTokens.stream()
+				.filter(token -> token.name().equals("ID"))
+				.forEach(token -> sb.append(String.format("%-" + columnWidth + "s\t%-" + columnWidth +  "s\t%-" + columnWidth + "s\t\n", token.value(), token.name(), token.type().isPresent() ? token.type().get() : "")));
+		uniqueTokens.stream()
+				.filter(token -> constValidTokenNames.contains(token.name()))
+				.filter(this::validateTokenValue)
+				.forEach(token -> {
+						sb.append(String.format("%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\t%-" + columnWidth + "s\n", "_" + token.value(), token.name(), "" , token.value()));
+				});
+		try (FileWriter writer = new FileWriter(file)) {
+			writer.write(sb.toString());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(frame, "Error al guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+		private void saveDataSectionIntoStatic(ArrayList<TokenObject> tokenList) {
+		ArrayList<TokenObject> uniqueTokens = removeDuplicatesByName(tokenList);
 		int columnWidth = 10; // Define a fixed width for each column
 		final String FORMAT_STRING = "%-" + columnWidth + "s\t%-" + columnWidth + "s\t%s\n";
-		File file = new File("ts.txt");
 		List<String> constValidTokenNames = Arrays.asList("Cte_s", "Cte_f", "Cte_i", "Cte_b");
 		StringBuilder sb = new StringBuilder();
 		uniqueTokens.stream()
@@ -237,13 +258,13 @@ public class VistaGrafica {
 					String value = token.value().startsWith("\"") ? "'" + token.value().replaceAll("^\"|\"$", "") + "$'" : token.value();
 					sb.append(String.format(FORMAT_STRING, key, token.value().startsWith("\"") ? "DB" : "DD", value));
 				});
-		try (FileWriter writer = new FileWriter(file)) {
-			writer.write(sb.toString());
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(frame, "Error al guardar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+		try {
+			FlexLexico.setDataSectionASM(sb.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-
+	
 	private boolean validateTokenValue(TokenObject token) {
         return switch (token.name()) {
             case "CTE_STR" -> token.value().length() <= 30;

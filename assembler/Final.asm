@@ -6,7 +6,7 @@ include number.asm
 .STACK  200h    ; bytes en el stack
 
 .DATA           ; variables de la tabla de simbolos
-
+;-------DATA SECTION-----------
 
 .CODE           ; comienzo de la zona de codigo
 
@@ -15,11 +15,7 @@ include number.asm
         MOV DS,EAX
         MOV ES,EAX
 
-;-------START REAL PROGRAM-----------
-
-
-
-;-------END REAL PROGRAM-----------
+;-------BODY SECTION-----------
 
         MOV EAX, 4C00h      ; termina la ejecucion.
         INT 21h
