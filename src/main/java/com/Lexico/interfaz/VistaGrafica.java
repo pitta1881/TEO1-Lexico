@@ -136,6 +136,8 @@ public class VistaGrafica {
 						saveTsFile(tokenList);
 						saveDataSectionIntoStatic(tokenList);
 						FlexLexico.updateFinalAsmWithSections();
+						showSuccessDialog("Análisis completado con éxito.", 
+								"Se han generado los archivos 'ts.txt' y 'Final.asm'.");
 					} catch (Exception e1) {
 						showErrorDialog(e1.getMessage());
 					}
@@ -146,6 +148,10 @@ public class VistaGrafica {
 
 	private void showErrorDialog(String message) {
 		JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	private void showSuccessDialog(String message1, String message2) {
+		JOptionPane.showMessageDialog(frame, message1 + "\n" + message2, "Éxito", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 
