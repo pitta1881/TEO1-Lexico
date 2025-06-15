@@ -1,1 +1,19 @@
 NOMBRE                                  	TOKEN                                   	TIPO                                    	VALOR                                   
+varFloat                                	ID                                      	FLOAT                                   	
+varInt                                  	ID                                      	INT                                     	
+varFloat2                               	ID                                      	FLOAT                                   	
+varInt2                                 	ID                                      	INT                                     	
+varCompuest                             	ID                                      	FLOAT                                   	
+varFloatComp                            	ID                                      	FLOAT                                   	
+varIntComp                              	ID                                      	INT                                     	
+_2                                      	Cte_i                                   	                                        	2                                       
+_3                                      	Cte_i                                   	                                        	3                                       
+_3.4                                    	Cte_f                                   	                                        	3.4                                     
+_1.6                                    	Cte_f                                   	                                        	1.6                                     
+_7                                      	Cte_i                                   	                                        	7                                       
+_6.5                                    	Cte_f                                   	                                        	6.5                                     
+_2.1                                    	Cte_f                                   	                                        	2.1                                     
+_37.0                                   	Cte_f                                   	                                        	37.0                                    
+_3.0                                    	Cte_f                                   	                                        	3.0                                     
+_5.0                                    	Cte_f                                   	                                        	5.0                                     
+_2.5                                    	Cte_f                                   	                                        	2.5                                     
